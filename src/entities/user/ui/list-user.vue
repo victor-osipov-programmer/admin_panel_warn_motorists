@@ -18,10 +18,10 @@
 
                     <v-tooltip activator="parent" location="top">Подписка активна до</v-tooltip>
                 </v-chip>
-
-                <app-button :size="window_width < 1050 ? 'min' : null" icon="mdi-gift" tooltip="Подарить подписку">Подарить подписку</app-button>
-                <app-button :size="window_width < 1150 ? 'min' : null" icon="mdi-email" tooltip="Персональная рассылка">Персональная рассылка</app-button>
-                <app-button :size="window_width < 1250 ? 'min' : null" color="deep-orange-darken-4" icon="mdi-lock" tooltip="Блокировать пользователя">Блокировать</app-button>
+ 
+                <app-button @click.stop :size="window_width < 1050 ? 'min' : null" icon="mdi-gift" tooltip="Подарить подписку">Подарить подписку</app-button>
+                <app-button @click.stop :size="window_width < 1150 ? 'min' : null" icon="mdi-email" tooltip="Персональная рассылка">Персональная рассылка</app-button>
+                <app-button @click.stop :size="window_width < 1250 ? 'min' : null" color="deep-orange-darken-4" icon="mdi-lock" tooltip="Блокировать пользователя">Блокировать</app-button>
             </div>
 
         </template>
