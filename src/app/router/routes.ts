@@ -1,6 +1,6 @@
-import { Users } from "@/widgets/users"
-import { ProcessingApplications } from "@/widgets/processing-applications"
-import { Mailing } from "@/widgets/mailing"
+import { Users } from "@/pages/users"
+import { ProcessingApplications } from "@/pages/processing-applications"
+import { Mailing } from "@/pages/mailing"
 
 export const routes = [
     {
