@@ -19,34 +19,9 @@
                     <v-tooltip activator="parent" location="top">Подписка активна до</v-tooltip>
                 </v-chip>
 
-
-                <v-btn>
-                    <template v-slot:prepend>
-                        <v-icon icon="mdi-gift" start></v-icon>
-                    </template>
-
-                    Подарить подписку
-
-                    <v-tooltip activator="parent" location="top">Подарить подписку</v-tooltip>
-                </v-btn>
-                <v-btn>
-                    <template v-slot:prepend>
-                        <v-icon icon="mdi-email" start></v-icon>
-                    </template>
-
-                    Персональная рассылка
-
-                    <v-tooltip activator="parent" location="top">Персональная рассылка</v-tooltip>
-                </v-btn>
-                <v-btn color="deep-orange-darken-4">
-                    <template v-slot:prepend>
-                        <v-icon icon="mdi-lock" start></v-icon>
-                    </template>
-
-                    Блокировать
-
-                    <v-tooltip activator="parent" location="top">Блокировать пользователя</v-tooltip>
-                </v-btn>
+                <app-button :size="window_width < 1050 ? 'min' : null" icon="mdi-gift" tooltip="Подарить подписку">Подарить подписку</app-button>
+                <app-button :size="window_width < 1150 ? 'min' : null" icon="mdi-email" tooltip="Персональная рассылка">Персональная рассылка</app-button>
+                <app-button :size="window_width < 1250 ? 'min' : null" color="deep-orange-darken-4" icon="mdi-lock" tooltip="Блокировать пользователя">Блокировать</app-button>
             </div>
 
         </template>
@@ -54,11 +29,14 @@
 </template>
 
 <script lang="ts" setup>
+import { window_width } from '@/shared/libs';
 import { IUser } from './types';
+import { AppButton } from '@/shared/ui/app-button';
 
 defineProps<{
     user: IUser
 }>()
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>
