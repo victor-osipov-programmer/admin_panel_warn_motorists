@@ -4,6 +4,11 @@ import { Mailing } from "@/pages/mailing"
 
 export const routes = [
     {
+        path: '/',
+        name: 'home',
+        redirect: { name: 'users' }
+    },
+    {
         path: '/users',
         name: 'users',
         component: Users
