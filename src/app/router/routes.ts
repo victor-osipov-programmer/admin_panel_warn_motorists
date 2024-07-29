@@ -1,12 +1,18 @@
 import { Users } from "@/pages/users"
 import { ProcessingApplications } from "@/pages/processing-applications"
 import { Mailing } from "@/pages/mailing"
+import { Statistics } from "@/pages/statistics"
 
 export const routes = [
     {
         path: '/',
         name: 'home',
-        redirect: { name: 'users' }
+        redirect: { name: 'statistics' }
+    },
+    {
+        path: '/statistics',
+        name: 'statistics',
+        component: Statistics
     },
     {
         path: '/users',

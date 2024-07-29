@@ -23,7 +23,7 @@
                 <v-card title="Заявка">
                     <div class="pa-5 images">
                         <v-img v-for="n in 4"
-                            src="https://s0.rbk.ru/v6_top_pics/resized/800xH/media/img/0/59/756473552274590.jpg" cover>
+                            src="https://s0.rbk.ru/v6_top_pics/resized/800xH/media/img/0/59/756473552274590.jpg" cover rounded>
 
                             <template v-slot:placeholder>
                                 <v-row>
