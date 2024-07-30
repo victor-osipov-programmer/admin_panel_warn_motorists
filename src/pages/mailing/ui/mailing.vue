@@ -1,6 +1,6 @@
 <template>
     <div class="mailing">
-        <app-mailing>Отправить всем пользователям</app-mailing>
+        <app-mailing>Запустить рассылку</app-mailing>
     </div>
 </template>
 

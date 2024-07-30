@@ -133,13 +133,13 @@ function deny() {
     gap: 1rem;
 }
 
-.green {
-    color: #4CAF50;
-}
+// .green {
+//     color: #4CAF50;
+// }
 
-.red {
-    color: #F44336;
-}
+// .red {
+//     color: #F44336;
+// }
 
 @media (width < 1000px) {
     .images {

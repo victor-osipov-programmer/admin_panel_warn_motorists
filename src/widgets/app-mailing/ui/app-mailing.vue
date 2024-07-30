@@ -3,13 +3,28 @@
         <v-textarea ref="textarea" v-model="input" label="Текст расслыки" prepend-icon="mdi-comment"
             rows="1"></v-textarea>
 
-        <v-btn prepend-icon="mdi-check-circle" class="ml-10">
-            <template v-slot:prepend>
-                <v-icon color="success"></v-icon>
+
+        <v-dialog width="auto" v-model="dialog_mailing">
+            <template #activator="{ props }">
+                <v-btn v-bind="props" prepend-icon="mdi-check-circle" class="ml-10">
+                    <template v-slot:prepend>
+                        <v-icon color="success"></v-icon>
+                    </template>
+
+                    <slot></slot>
+                </v-btn>
             </template>
 
-            <slot>Отправить всем пользователям</slot>
-        </v-btn>
+            <v-card title="Уверены?">
+                <v-card-text>
+                    Вы запустите рассылку <span class="green">для всех пользователей</span>
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-btn @click="startMailing">Да</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -17,8 +32,13 @@
 import { useTextareaAutosize } from '@vueuse/core';
 import { onMounted, ref } from 'vue';
 
+const dialog_mailing = ref(false)
 const textarea = ref(null)
 const input = ref('')
+
+function startMailing() {
+    dialog_mailing.value = false;
+}
 
 onMounted(() => {
     useTextareaAutosize({
@@ -35,6 +55,7 @@ onMounted(() => {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
 :deep(#input-7::-webkit-scrollbar) {
     display: none;
 }
