@@ -1,0 +1,1 @@
+export {default as PersonalMailing} from './ui/personal-mailing.vue'

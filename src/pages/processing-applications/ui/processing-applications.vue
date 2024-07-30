@@ -22,12 +22,10 @@
 
                 <v-card title="Заявка">
                     <div class="pa-5 images">
-                        <v-img v-for="car in application_cars" :src="car" cover rounded>
+                        <v-img v-for="car in application_cars" :src="car" cover rounded min-height="200">
 
                             <template v-slot:placeholder>
-                                <v-row>
-                                    <v-progress-circular color="grey-lighten-5" indeterminate></v-progress-circular>
-                                </v-row>
+                                <loading/>
                             </template>
                         </v-img>
                     </div>
@@ -59,6 +57,7 @@
 </template>
 
 <script setup>
+import { Loading } from '@/shared/ui/loading';
 import { computed, ref } from 'vue';
 
 const application_id = ref(null)
@@ -131,15 +130,8 @@ function deny() {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
+    // min-height: 500px;
 }
-
-// .green {
-//     color: #4CAF50;
-// }
-
-// .red {
-//     color: #F44336;
-// }
 
 @media (width < 1000px) {
     .images {

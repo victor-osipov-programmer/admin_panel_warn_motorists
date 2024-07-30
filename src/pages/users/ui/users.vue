@@ -11,7 +11,11 @@
                 <div class="pl-8 py-8 pr-5 user-content">
 
                     <div class="cars">
-                        <v-img v-for="car in user.cars" :src="car" height="300" cover rounded></v-img>
+                        <v-img v-for="car in user.cars" :src="car" height="300" cover rounded>
+                            <template v-slot:placeholder>
+                                <loading/>
+                            </template>
+                        </v-img>
                     </div>
                 </div>
             </v-list-group>
@@ -22,6 +26,7 @@
 <script setup>
 import { ref } from 'vue';
 import { ListUser } from '@/entities/user';
+import { Loading } from '@/shared/ui/loading';
 
 const users = ref([
     {
@@ -81,5 +86,4 @@ const users = ref([
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
 }
-
 </style>

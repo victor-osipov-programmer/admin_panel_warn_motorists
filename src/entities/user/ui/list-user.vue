@@ -35,8 +35,9 @@
                     </v-card>
                 </v-dialog>
                 
+                <app-button :to="{name: 'personal-mailing', params: {id: user.id}}" @click.stop="" :size="window_width < 1150 ? 'min' : null" icon="mdi-email" tooltip="Персональная рассылка">Персональная рассылка</app-button>
                 
-                <app-button @click.stop :size="window_width < 1150 ? 'min' : null" icon="mdi-email" tooltip="Персональная рассылка">Персональная рассылка</app-button>
+                
                 <v-dialog width="auto" v-model="dialog_ban">
                     <template v-slot:activator="{props}">
                         <app-button v-bind="props" @click.stop="dialog_ban = true" :size="window_width < 1250 ? 'min' : null" color="deep-orange-darken-4" icon="mdi-lock" tooltip="Блокировать пользователя">Блокировать</app-button>
