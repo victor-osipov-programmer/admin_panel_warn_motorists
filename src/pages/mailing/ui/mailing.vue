@@ -1,11 +1,7 @@
 <template>
     <div class="mailing">
-        <app-mailing>
+        <app-mailing confirm_message="Вы запустите рассылку <span class='green'>для всех пользователей</span>">
             Запустить рассылку
-            
-            <template #confirmation-text>
-                Вы запустите рассылку <span class="green">для всех пользователей</span>
-            </template>
         </app-mailing>
     </div>
 </template>

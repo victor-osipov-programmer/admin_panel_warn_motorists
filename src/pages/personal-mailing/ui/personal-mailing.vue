@@ -1,11 +1,7 @@
 <template>
     <div class="personal-mailing">
-        <app-mailing>
+        <app-mailing confirm_message="Вы отправите <span class='green'>персональное</span> сообщение" confirm_accept_text="Сообщение отправлено">
             Отправить
-
-            <template #confirmation-text>
-                Вы отправите <span class="green">персональное</span> сообщение
-            </template>
 
             <template #actions>
                 <v-btn @click="router.go(-1)">Назад</v-btn>

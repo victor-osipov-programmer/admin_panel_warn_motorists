@@ -2,6 +2,11 @@
     <v-app>
         <Toast />
         <ConfirmDialog></ConfirmDialog>
+        <ConfirmDialog group="confirm_html">
+            <template #message="slotProps">
+                <div v-html="slotProps.message.message"></div>
+            </template>
+        </ConfirmDialog>
 
         <v-navigation-drawer v-model="drawer" :rail="rail" permanent>
             <div class="d-flex justify-end mr-1 my-1">

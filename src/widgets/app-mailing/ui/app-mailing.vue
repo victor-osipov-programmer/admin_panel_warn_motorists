@@ -3,47 +3,49 @@
         <v-textarea label="Текст" prepend-icon="mdi-comment" rows="4" auto-grow></v-textarea>
 
         <div class="ml-10 d-flex ga-3">
-            <slot name="actions">
+            <slot name="actions"></slot>
 
-            </slot>
-
-            <v-dialog width="auto" v-model="dialog_mailing">
-                <template #activator="{ props }">
-                    <v-btn v-bind="props" prepend-icon="mdi-check-circle">
-                        <template v-slot:prepend>
-                            <v-icon color="success"></v-icon>
-                        </template>
-
-                        <slot></slot>
-                    </v-btn>
+            <v-btn @click="confirmMailing" prepend-icon="mdi-check-circle">
+                <template v-slot:prepend>
+                    <v-icon color="success"></v-icon>
                 </template>
 
-                <v-card title="Уверены?">
-                    <v-card-text>
-                        <slot name="confirmation-text">
-
-                        </slot>
-
-                    </v-card-text>
-
-                    <v-card-actions>
-                        <v-btn @click="startMailing">Да</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
+                <slot></slot>
+            </v-btn>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
 
-const dialog_mailing = ref(false)
+const props = defineProps<{
+    confirm_message: string,
+    confirm_accept_text?: string
+}>()
+const confirm = useConfirm();
+const toast = useToast();
 
-function startMailing() {
-    dialog_mailing.value = false;
+function confirmMailing() {
+    confirm.require({
+        group: 'confirm_html',
+        message: props.confirm_message,
+        header: 'Уверены?',
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: 'Нет',
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+            label: 'Да'
+        },
+        accept: () => {
+            toast.add({ severity: 'info', summary: 'Успешно', detail: props.confirm_accept_text ?? 'Рассылка запущена', life: 3000 });
+        }
+    });
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

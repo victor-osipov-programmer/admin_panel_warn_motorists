@@ -18,41 +18,19 @@
 
                     <v-tooltip activator="parent" location="top">Подписка активна до</v-tooltip>
                 </v-chip>
- 
-                <v-dialog width="auto" v-model="dialog_gift">
-                    <template #activator="{props}">
-                        <app-button v-bind="props" @click.stop="dialog_gift = true" :size="window_width < 1000 ? 'min' : null" icon="mdi-gift" tooltip="Подарить подписку">Подарить подписку</app-button>
-                    </template>
 
-                    <v-card title="Уверены?">
-                        <v-card-text>
-                            Вы <span class="green">подарите</span> подписку выбранному пользователю
-                        </v-card-text>
-                        
-                        <v-card-actions>
-                            <v-btn @click="donateSubscription">Да</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-                
-                <app-button :to="{name: 'personal-mailing', params: {id: user.id}}" @click.stop="" :size="window_width < 1150 ? 'min' : null" icon="mdi-email" tooltip="Персональная рассылка">Персональная рассылка</app-button>
-                
-                
-                <v-dialog width="auto" v-model="dialog_ban">
-                    <template v-slot:activator="{props}">
-                        <app-button v-bind="props" @click.stop="dialog_ban = true" :size="window_width < 1250 ? 'min' : null" color="deep-orange-darken-4" icon="mdi-lock" tooltip="Блокировать пользователя">Блокировать</app-button>
-                    </template>
+                <app-button @click.stop="confirmGift"
+                    :size="window_width < 1000 ? 'min' : null" icon="mdi-gift"
+                    tooltip="Подарить подписку">Подарить подписку</app-button>
 
-                    <v-card title="Уверены?">
-                        <v-card-text>
-                            Вы <span class="red">заблокируете</span> пользователя
-                        </v-card-text>
+                <app-button :to="{ name: 'personal-mailing', params: { id: user.id } }" @click.stop=""
+                    :size="window_width < 1150 ? 'min' : null" icon="mdi-email"
+                    tooltip="Персональная рассылка">Персональная
+                    рассылка</app-button>
 
-                        <v-card-actions>
-                            <v-btn color="red" @click="ban()">Да</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
+                <app-button @click.stop="confirmBan" :size="window_width < 1250 ? 'min' : null"
+                    color="deep-orange-darken-4" icon="mdi-lock"
+                    tooltip="Блокировать пользователя">Блокировать</app-button>
             </div>
 
         </template>
@@ -63,21 +41,54 @@
 import { window_width } from '@/shared/libs';
 import { IUser } from './types';
 import { AppButton } from '@/shared/ui/app-button';
-import { ref } from 'vue';
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
+
+const confirm = useConfirm();
+const toast = useToast();
 
 defineProps<{
     user: IUser
 }>()
 
-const dialog_ban = ref(false)
-const dialog_gift = ref(false)
-function ban() {
-    dialog_ban.value = false;
+function confirmBan() {
+    confirm.require({
+        group: 'confirm_html',
+        message: '<div>Вы <span class="red">заблокируете</span> пользователя</div>',
+        header: 'Заблокировать?',
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: 'Нет',
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+            label: 'Да'
+        },
+        accept: () => {
+            toast.add({ severity: 'info', summary: 'Успешно', detail: 'Пользователь заблокирован', life: 3000 });
+        }
+    });
 }
-function donateSubscription() {
-    dialog_gift.value = false;
+function confirmGift() {
+    confirm.require({
+        group: 'confirm_html',
+        message: 'Вы <span class="green">подарите</span> подписку выбранному пользователю',
+        header: 'Подарить подписку?',
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: 'Нет',
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+            label: 'Да'
+        },
+        accept: () => {
+            toast.add({ severity: 'info', summary: 'Успешно', detail: 'Вы подарили подписку', life: 3000 });
+        }
+    });
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
