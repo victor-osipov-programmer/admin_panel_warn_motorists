@@ -1,21 +1,11 @@
 <template>
-    <div class="mailing pa-5">
-        <v-textarea label="Текст расслыки" prepend-icon="mdi-comment" rows="1"></v-textarea>
-
-        <v-btn prepend-icon="mdi-check-circle" class="ml-10">
-            <template v-slot:prepend>
-                <v-icon color="success"></v-icon>
-            </template>
-
-            Отправить
-
-            <v-tooltip activator="parent">Отправить рассылку всем пользователям</v-tooltip>
-        </v-btn>
+    <div class="mailing">
+        <app-mailing>Отправить всем пользователям</app-mailing>
     </div>
 </template>
 
 <script setup>
-
+import { AppMailing } from '@/widgets/app-mailing';
 </script>
 
 <style lang="scss" scoped></style>

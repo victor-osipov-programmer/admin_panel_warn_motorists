@@ -1,0 +1,1 @@
+export {default as AppMailing} from './ui/app-mailing.vue'
