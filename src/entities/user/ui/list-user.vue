@@ -66,7 +66,7 @@ function confirmBan() {
             label: 'Да'
         },
         accept: () => {
-            toast.add({ severity: 'info', summary: 'Успешно', detail: 'Пользователь заблокирован', life: 3000 });
+            toast.add({ severity: 'warn', summary: 'Успешно', detail: 'Пользователь заблокирован', life: 3000 });
         }
     });
 }
@@ -85,7 +85,7 @@ function confirmGift() {
             label: 'Да'
         },
         accept: () => {
-            toast.add({ severity: 'info', summary: 'Успешно', detail: 'Вы подарили подписку', life: 3000 });
+            toast.add({ severity: 'success', summary: 'Успешно', detail: 'Вы подарили подписку', life: 3000 });
         }
     });
 }

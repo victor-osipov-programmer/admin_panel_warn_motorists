@@ -17,52 +17,56 @@
                 </template>
             </v-list-item>
 
-
-            <v-dialog v-model="dialog" max-width="1000">
-
-                <v-card title="Заявка">
-                    <div class="pa-5 images">
-                        <v-img v-for="car in application_cars" :src="car" cover rounded min-height="200">
-
-                            <template v-slot:placeholder>
-                                <loading/>
+            <Dialog v-model:visible="dialog" modal header="Заявка">
+                <Card>
+                    <template #content>
+                        <Galleria :value="application_cars" :responsiveOptions="responsiveOptions" :numVisible="3">
+                            <template #item="slotProps">
+                                <Image preview :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt"
+                                    style="height: 350px; width: 550px;">
+                                    <template #image>
+                                        <img class="img" :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt"
+                                            style="height: 350px; width: 550px;">
+                                    </template>
+                                </Image>
                             </template>
-                        </v-img>
-                    </div>
-
-                    <template v-slot:actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="red" @click="deny">Отказать</v-btn>
-                        <v-btn color="green" @click="accept">Принять</v-btn>
-                    </template>
-                </v-card>
-            </v-dialog>
-
-            <v-dialog v-model="notification" width="auto">
-                <v-card max-width="400" prepend-icon="mdi-check">
-                    <template v-slot:title>
-                        <span class="font-weight-black">Выполнено</span>
+                            <template #thumbnail="slotProps">
+                                <img class="img" :src="slotProps.item.thumbnailImageSrc" :alt="slotProps.item.alt"
+                                    style="height: 50px; width: 80px;" />
+                            </template>
+                        </Galleria>
                     </template>
 
-                    <v-card-text v-if="dialog_result">Заявление <span class="green">принято</span></v-card-text>
-                    <v-card-text v-else>Заявление <span class="red">отклонено</span></v-card-text>
-
-                    <template v-slot:actions>
-                        <v-btn class="ms-auto" text="Ok" @click="notification = false"></v-btn>
+                    <template #footer>
+                        <div class="d-flex ga-3 mt-6">
+                            <v-spacer></v-spacer>
+                            <v-btn color="red" @click="deny">Отказать</v-btn>
+                            <v-btn color="green" @click="accept">Принять</v-btn>
+                        </div>
                     </template>
-                </v-card>
-            </v-dialog>
+                </Card>
+            </Dialog>
         </v-list>
     </div>
 </template>
 
 <script setup>
 import { Loading } from '@/shared/ui/loading';
+import { useToast } from 'primevue/usetoast';
 import { computed, ref } from 'vue';
+
+const toast = useToast();
 
 const application_id = ref(null)
 const application_cars = computed(() => {
-    return applications.value.find((application) => application.id === application_id.value)?.cars ?? []
+    return applications.value.find((application) => application.id === application_id.value)?.cars.map((car) => {
+        return {
+            itemImageSrc: car,
+            thumbnailImageSrc: car,
+            alt: 'car',
+            title: 'car'
+        }
+    }) ?? []
 })
 const dialog = ref(false)
 const dialog_result = ref(null)
@@ -106,31 +110,42 @@ function deleteApplication() {
 }
 
 function accept() {
-    dialog_result.value = true
-    dialog.value = false
-
-    setTimeout(() => {
-        notification.value = true
-        deleteApplication()
-    }, 200)
+    dialog.value = false;
+    toast.add({ severity: 'success', summary: 'Успешно', detail: 'Заявление принято', life: 3000 });
+    deleteApplication()
 }
 function deny() {
-    dialog_result.value = false
-    dialog.value = false
-
-    setTimeout(() => {
-        notification.value = true
-        deleteApplication()
-    }, 200)
+    dialog.value = false;
+    toast.add({ severity: 'warn', summary: 'Успешно', detail: 'Заявление отклонено', life: 3000 });
+    deleteApplication()
 }
+
+const responsiveOptions = ref([
+    {
+        breakpoint: '1300px',
+        numVisible: 4
+    },
+    {
+        breakpoint: '575px',
+        numVisible: 1
+    }
+]);
 </script>
 
 <style lang="scss" scoped>
-.images {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    // min-height: 500px;
+// .application {
+//     max-width: 1000px;
+// }
+
+// .images {
+//     max-width: 1000px;
+//     display: grid;
+//     grid-template-columns: repeat(3, 1fr);
+//     gap: 1rem;
+//     // min-height: 500px;
+// }
+.img {
+    object-fit: cover;
 }
 
 @media (width < 1000px) {
