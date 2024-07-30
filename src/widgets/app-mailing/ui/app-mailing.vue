@@ -1,6 +1,6 @@
 <template>
     <div class="app-mailing pa-5">
-        <v-textarea ref="textarea" v-model="input" label="Текст" prepend-icon="mdi-comment" rows="1"></v-textarea>
+        <v-textarea label="Текст" prepend-icon="mdi-comment" rows="4" auto-grow></v-textarea>
 
         <div class="ml-10 d-flex ga-3">
             <slot name="actions">
@@ -32,41 +32,18 @@
                 </v-card>
             </v-dialog>
         </div>
-
-
-
     </div>
 </template>
 
 <script lang="ts" setup>
-import { useTextareaAutosize } from '@vueuse/core';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 const dialog_mailing = ref(false)
-const textarea = ref(null)
-const input = ref('')
 
 function startMailing() {
     dialog_mailing.value = false;
 }
-
-onMounted(() => {
-    useTextareaAutosize({
-        // @ts-ignore
-        element: textarea.value.$el.children[1].children[0].children[2].children[2],
-        input
-    })
-})
 </script>
 
 <style lang="scss" scoped>
-:deep(.v-field__input) {
-    resize: none;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-:deep(.v-field__input::-webkit-scrollbar) {
-    display: none;
-}
 </style>
