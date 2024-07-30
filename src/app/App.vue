@@ -1,11 +1,9 @@
 <template>
     <v-app>
         <v-navigation-drawer v-model="drawer" :rail="rail" permanent>
-            <v-list-item nav>
-                <template v-slot:append>
-                    <v-btn :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'" variant="text" @click.stop="rail = !rail"></v-btn>
-                </template>
-            </v-list-item>
+            <div class="d-flex justify-end mr-1 my-1">
+                <v-btn :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'" @click.stop="rail = !rail"></v-btn>
+            </div>
 
             <v-divider></v-divider>
 
