@@ -9,8 +9,10 @@
         </ConfirmDialog>
 
         <v-navigation-drawer v-model="drawer" :rail="rail" permanent>
-            <div class="d-flex justify-end mr-1 my-1">
-                <v-btn :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'" variant="text" @click.stop="rail = !rail"></v-btn>
+            <div class="d-flex justify-space-between align-center mr-1 ml-2 my-1 ga-3">
+                <img class="app-icon" src="/icons/app-icon.png" alt="app-icon" @click.stop="rail = !rail">
+
+                <v-btn class="arrow" icon="mdi-chevron-left" variant="text" @click.stop="rail = !rail"></v-btn>
             </div>
 
             <v-divider></v-divider>
@@ -35,3 +37,13 @@ import { ref } from 'vue';
 const drawer = ref(true)
 const rail = ref(true)
 </script>
+
+<style scoped>
+.app-icon {
+    cursor: pointer;
+    width: 40px;
+}
+.arrow {
+    transition: all 1s;
+}
+</style>
