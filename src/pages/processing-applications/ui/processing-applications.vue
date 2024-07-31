@@ -18,33 +18,25 @@
             </v-list-item>
 
             <Dialog v-model:visible="dialog" modal header="Заявка">
-                <Card>
-                    <template #content>
-                        <Galleria :value="application_cars" :responsiveOptions="responsiveOptions" :numVisible="3">
-                            <template #item="slotProps">
-                                <Image preview :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt"
-                                    style="height: 350px; width: 550px;">
-                                    <template #image>
-                                        <img class="img" :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt"
-                                            style="height: 350px; width: 550px;">
-                                    </template>
-                                </Image>
+                <Galleria :value="application_cars" numVisible="3">
+                    <template #item="slotProps">
+                        <Image preview :src="slotProps.item" alt="Car">
+                            <template #image>
+                                <img class="img" :src="slotProps.item" alt="Car" style="height: 350px; width: 550px;">
                             </template>
-                            <template #thumbnail="slotProps">
-                                <img class="img" :src="slotProps.item.thumbnailImageSrc" :alt="slotProps.item.alt"
-                                    style="height: 50px; width: 80px;" />
-                            </template>
-                        </Galleria>
+                        </Image>
                     </template>
 
-                    <template #footer>
-                        <div class="d-flex ga-3 mt-6">
-                            <v-spacer></v-spacer>
-                            <v-btn color="red" @click="deny">Отказать</v-btn>
-                            <v-btn color="green" @click="accept">Принять</v-btn>
-                        </div>
+                    <template #thumbnail="slotProps">
+                        <img class="img thumbnail-img" :src="slotProps.item" alt="Car" style="height: 60px; width: 120px;" />
                     </template>
-                </Card>
+                </Galleria>
+
+                <div class="d-flex ga-3 mt-5">
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" @click="deny">Отказать</v-btn>
+                    <v-btn color="green" @click="accept">Принять</v-btn>
+                </div>
             </Dialog>
         </v-list>
     </div>
@@ -59,14 +51,7 @@ const toast = useToast();
 
 const application_id = ref(null)
 const application_cars = computed(() => {
-    return applications.value.find((application) => application.id === application_id.value)?.cars.map((car) => {
-        return {
-            itemImageSrc: car,
-            thumbnailImageSrc: car,
-            alt: 'car',
-            title: 'car'
-        }
-    }) ?? []
+    return applications.value.find((application) => application.id === application_id.value)?.cars ?? []
 })
 const dialog = ref(false)
 const dialog_result = ref(null)
@@ -113,39 +98,26 @@ function accept() {
     dialog.value = false;
     toast.add({ severity: 'success', summary: 'Успешно', detail: 'Заявление принято', life: 3000 });
     deleteApplication()
+    setTimeout(() => {
+    }, 5000)
 }
 function deny() {
     dialog.value = false;
     toast.add({ severity: 'warn', summary: 'Успешно', detail: 'Заявление отклонено', life: 3000 });
     deleteApplication()
+    setTimeout(() => {
+    }, 5000)
 }
 
-const responsiveOptions = ref([
-    {
-        breakpoint: '1300px',
-        numVisible: 4
-    },
-    {
-        breakpoint: '575px',
-        numVisible: 1
-    }
-]);
 </script>
 
 <style lang="scss" scoped>
-// .application {
-//     max-width: 1000px;
-// }
-
-// .images {
-//     max-width: 1000px;
-//     display: grid;
-//     grid-template-columns: repeat(3, 1fr);
-//     gap: 1rem;
-//     // min-height: 500px;
-// }
 .img {
     object-fit: cover;
+}
+// без этого при закрытии Dialog съезжают маленькие картинки
+:deep(.p-galleria-thumbnail-item) {
+    flex: 1 0 33.333333333333336%;
 }
 
 @media (width < 1000px) {
