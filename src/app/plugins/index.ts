@@ -4,9 +4,11 @@ import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
+import { createPinia } from 'pinia';
 import type { App } from 'vue'
 
 export function registerPlugins(app: App) {
+    app.use(createPinia())
     app.use(vuetify)
     app.use(PrimeVue, {
         theme: {

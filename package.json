@@ -12,6 +12,7 @@
     "@vueuse/core": "^10.11.0",
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
+    "pinia": "^2.2.0",
     "primeicons": "^7.0.0",
     "primevue": "^4.0.3",
     "roboto-fontface": "*",
