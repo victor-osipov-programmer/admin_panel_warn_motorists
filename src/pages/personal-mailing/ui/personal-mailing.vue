@@ -1,6 +1,6 @@
 <template>
     <div class="personal-mailing">
-        <app-mailing confirm_message="Вы отправите <span class='green'>персональное</span> сообщение" confirm_accept_text="Сообщение отправлено">
+        <app-mailing confirm_message="Вы отправите <span class='text-green'>персональное</span> сообщение" confirm_accept_text="Сообщение отправлено">
             Отправить
 
             <template #actions>

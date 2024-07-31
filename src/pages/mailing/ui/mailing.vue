@@ -1,6 +1,6 @@
 <template>
     <div class="mailing">
-        <app-mailing confirm_message="Вы запустите рассылку <span class='green'>для всех пользователей</span>">
+        <app-mailing confirm_message="Вы запустите рассылку <span class='text-green'>для всех пользователей</span>">
             Запустить рассылку
         </app-mailing>
     </div>

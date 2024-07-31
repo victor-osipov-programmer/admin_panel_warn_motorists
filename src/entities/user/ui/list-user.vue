@@ -54,7 +54,7 @@ defineProps<{
 function confirmBan() {
     confirm.require({
         group: 'confirm_html',
-        message: '<div>Вы <span class="red">заблокируете</span> пользователя</div>',
+        message: '<div>Вы <span class="text-red">заблокируете</span> пользователя</div>',
         header: 'Заблокировать?',
         icon: 'pi pi-exclamation-triangle',
         rejectProps: {
@@ -73,7 +73,7 @@ function confirmBan() {
 function confirmGift() {
     confirm.require({
         group: 'confirm_html',
-        message: 'Вы <span class="green">подарите</span> подписку выбранному пользователю',
+        message: 'Вы <span class="text-green">подарите</span> подписку выбранному пользователю',
         header: 'Подарить подписку?',
         icon: 'pi pi-exclamation-triangle',
         rejectProps: {
