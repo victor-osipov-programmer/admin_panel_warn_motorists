@@ -1,7 +1,7 @@
 <template>
     <v-list-item :subtitle="formatPhone(user.phone)" :title="user.name">
         <template v-slot:prepend>
-            {{ 0 }}
+            {{ cars_number }}
 
             <v-avatar>
                 <v-icon icon="mdi-car"></v-icon>
@@ -12,9 +12,9 @@
 
         <template v-slot:append>
             <div class="d-flex ga-3">
-                <v-chip color="deep-orange-darken-1" label>
+                <v-chip v-if="user.subscription_end" color="deep-orange-darken-1" label>
                     <v-icon icon="mdi-fire" start></v-icon>
-                    {{ new Date().toLocaleString() }}
+                    {{ new Date(user.subscription_end).toLocaleString() }}
 
                     <v-tooltip activator="parent" location="top">Подписка активна до</v-tooltip>
                 </v-chip>
@@ -31,10 +31,15 @@
 <script lang="ts" setup>
 import { formatPhone } from '@/shared/libs';
 import type { IUserApi } from '../types';
+import { computed } from 'vue';
 
-defineProps<{
+const props = defineProps<{
     user: IUserApi
 }>()
+
+const cars_number = computed(() => {
+    return props.user.cars_owned === null ? 0 : props.user.cars_owned.length
+})
 </script>
 
 <style lang="scss" scoped></style>

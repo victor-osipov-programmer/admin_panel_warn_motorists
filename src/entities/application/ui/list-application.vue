@@ -5,7 +5,7 @@
             <div class="d-flex ga-3">
                 <v-chip color="green" label>
                     <v-icon icon="mdi-message" start></v-icon>
-                    {{ new Date().toLocaleString() }}
+                    {{ new Date(application.request_created).toLocaleString() }}
 
                     <v-tooltip activator="parent">Время заявки</v-tooltip>
                 </v-chip>

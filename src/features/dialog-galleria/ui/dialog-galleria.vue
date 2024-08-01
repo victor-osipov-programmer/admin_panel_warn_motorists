@@ -23,7 +23,7 @@
 <script lang="ts" setup>
 defineProps<{
     header: string,
-    images: any
+    images: string[]
 }>()
 
 const visible = defineModel<boolean>('visible')

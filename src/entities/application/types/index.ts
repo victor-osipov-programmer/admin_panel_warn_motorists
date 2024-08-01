@@ -3,5 +3,6 @@ export interface IApplicationApi {
     number: string,
     user_id: string,
     brand: string,
-    photo: string
+    photo: string,
+    request_created: string
 }

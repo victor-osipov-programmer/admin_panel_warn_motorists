@@ -12,8 +12,8 @@
             </template>
 
             <template #content>
-                <DataView data-key="id" :value="application_model.applications" :rows="application_model.currentPageSize"
-                    :sortOrder="sortByDate.value" :sortField="'application_time'">
+                <DataView data-key="id" :value="application_model.applications"
+                    :rows="application_model.currentPageSize" :sortOrder="sortByDate.value" sortField="request_created">
                     <template #list="slotProps">
                         <div class="py-5">
 
@@ -57,9 +57,9 @@ const sortOptions = ref([
     { label: 'Сначала старые', value: 1 },
 ]);
 const application_id = ref<null | string>(null)
-const application_cars = computed(() => {
-    // @ts-ignore
-    return application_model.applications.find((application) => application.id === application_id.value)?.cars ?? []
+const application_cars = computed((): string[] => {
+    const photo = application_model.applications.find((application) => application.id === application_id.value)?.photo
+    return photo ? [photo] : []
 })
 const dialog = ref(false)
 

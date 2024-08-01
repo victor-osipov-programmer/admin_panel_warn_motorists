@@ -28,7 +28,7 @@ import { useToast } from 'primevue/usetoast';
 
 defineProps<{
     header: string,
-    application_cars: any
+    application_cars: string[]
 }>()
 
 const visible = defineModel<boolean>('visible')

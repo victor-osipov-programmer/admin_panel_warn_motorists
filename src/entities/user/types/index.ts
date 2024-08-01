@@ -3,7 +3,12 @@ export interface IUserApi {
     phone: string,
     name: string,
     avatar: string,
-    refreshToken: string,
-    fbToken: string,
-    subscriptionLevel: string
+    subscriptionLevel: string,
+    cars_owned: ICarOwned[] | null,
+    subscription_end: string | null
+}
+
+export interface ICarOwned {
+    number: string,
+    brand: string
 }

@@ -1,40 +1,27 @@
 <template>
-    <dialog-galleria v-model:visible="visible" :header :images="user_cars">
-        <template #item="{ item }">
-            <Image preview :src="item" alt="Car">
-                <template #image>
-                    <img class="img" :src="item" alt="Car" style="height: 350px; width: 550px;">
-                </template>
-            </Image>
-        </template>
+    <Dialog :header v-model:visible="visible" style="min-width: 350px;">
+        <DataTable :value="user_cars">
+            <Column field="brand" header="Бренд"></Column>
+            <Column field="number" header="Номер машины"></Column>
 
-        <template #thumbnail="{ item }">
-            <img class="img thumbnail-img" :src="item" alt="Car" style="height: 60px; width: 120px;" />
-        </template>
-
-        <template #actions>
-            <div class="d-flex ga-3 mt-5">
-                <v-spacer></v-spacer>
-                <v-btn color="green" @click="close">Закрыть</v-btn>
-            </div>
-        </template>
-    </dialog-galleria>
+            <template #empty>
+                <div class="text-grey ">
+                    У этого пользователя нет машин
+                </div>
+            </template>
+        </DataTable>
+    </Dialog>
 </template>
 
 <script lang="ts" setup>
-import { DialogGalleria } from '@/features/dialog-galleria';
+import { ICarOwned } from '@/entities/user';
 
 defineProps<{
     header: string,
-    user_cars: any
+    user_cars: ICarOwned[]
 }>()
 
 const visible = defineModel<boolean>('visible')
-const emit = defineEmits(['deleteApplication'])
-
-function close() {
-    visible.value = false;
-}
 </script>
 
 <style lang="scss" scoped></style>

@@ -1,19 +1,18 @@
 <template>
     <list-user :user>
-        <app-button @click.stop="confirmGift" :size="window_width < 1000 ? 'min' : null" icon="mdi-gift"
+        <app-button @click.stop="confirmGift" size="min" icon="mdi-gift"
             tooltip="Подарить подписку">Подарить подписку</app-button>
 
         <app-button :to="{ name: 'personal-mailing', params: { id: user.id } }" @click.stop
-            :size="window_width < 1150 ? 'min' : null" icon="mdi-email" tooltip="Персональная рассылка">Персональная
+            size="min" icon="mdi-email" tooltip="Персональная рассылка">Персональная
             рассылка</app-button>
 
-        <app-button @click.stop="confirmBan" :size="window_width < 1250 ? 'min' : null" color="deep-orange-darken-4"
+        <app-button @click.stop="confirmBan" size="min" color="deep-orange-darken-4"
             icon="mdi-lock" tooltip="Блокировать пользователя">Блокировать</app-button>
     </list-user>
 </template>
 
 <script lang="ts" setup>
-import { window_width } from '@/shared/libs';
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import { IUserApi, ListUser } from '@/entities/user';
