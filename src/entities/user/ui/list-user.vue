@@ -1,7 +1,7 @@
 <template>
-    <v-list-item :subtitle="user.telephone" :title="user.first_name">
+    <v-list-item :subtitle="formatPhone(user.phone)" :title="user.name">
         <template v-slot:prepend>
-            {{ user.number_cars }}
+            {{ 0 }}
 
             <v-avatar>
                 <v-icon icon="mdi-car"></v-icon>
@@ -14,23 +14,14 @@
             <div class="d-flex ga-3">
                 <v-chip color="deep-orange-darken-1" label>
                     <v-icon icon="mdi-fire" start></v-icon>
-                    {{ new Date(user.end_subscription).toLocaleString() }}
+                    {{ new Date().toLocaleString() }}
 
                     <v-tooltip activator="parent" location="top">Подписка активна до</v-tooltip>
                 </v-chip>
 
-                <app-button @click.stop="confirmGift"
-                    :size="window_width < 1000 ? 'min' : null" icon="mdi-gift"
-                    tooltip="Подарить подписку">Подарить подписку</app-button>
+                <slot>
 
-                <app-button :to="{ name: 'personal-mailing', params: { id: user.id } }" @click.stop=""
-                    :size="window_width < 1150 ? 'min' : null" icon="mdi-email"
-                    tooltip="Персональная рассылка">Персональная
-                    рассылка</app-button>
-
-                <app-button @click.stop="confirmBan" :size="window_width < 1250 ? 'min' : null"
-                    color="deep-orange-darken-4" icon="mdi-lock"
-                    tooltip="Блокировать пользователя">Блокировать</app-button>
+                </slot>
             </div>
 
         </template>
@@ -38,57 +29,12 @@
 </template>
 
 <script lang="ts" setup>
-import { window_width } from '@/shared/libs';
-import { IUser } from './types';
-import { AppButton } from '@/shared/ui/app-button';
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
-
-const confirm = useConfirm();
-const toast = useToast();
+import { formatPhone } from '@/shared/libs';
+import type { IUserApi } from '../types';
 
 defineProps<{
-    user: IUser
+    user: IUserApi
 }>()
-
-function confirmBan() {
-    confirm.require({
-        group: 'confirm_html',
-        message: '<div>Вы <span class="text-red">заблокируете</span> пользователя</div>',
-        header: 'Заблокировать?',
-        icon: 'pi pi-exclamation-triangle',
-        rejectProps: {
-            label: 'Нет',
-            severity: 'secondary',
-            outlined: true
-        },
-        acceptProps: {
-            label: 'Да'
-        },
-        accept: () => {
-            toast.add({ severity: 'warn', summary: 'Успешно', detail: 'Пользователь заблокирован', life: 3000 });
-        }
-    });
-}
-function confirmGift() {
-    confirm.require({
-        group: 'confirm_html',
-        message: 'Вы <span class="text-green">подарите</span> подписку выбранному пользователю',
-        header: 'Подарить подписку?',
-        icon: 'pi pi-exclamation-triangle',
-        rejectProps: {
-            label: 'Нет',
-            severity: 'secondary',
-            outlined: true
-        },
-        acceptProps: {
-            label: 'Да'
-        },
-        accept: () => {
-            toast.add({ severity: 'success', summary: 'Успешно', detail: 'Вы подарили подписку', life: 3000 });
-        }
-    });
-}
 </script>
 
 <style lang="scss" scoped></style>

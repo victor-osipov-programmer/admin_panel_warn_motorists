@@ -1,0 +1,1 @@
+export { default as DialogGalleria } from './ui/dialog-galleria.vue'

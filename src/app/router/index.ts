@@ -10,13 +10,11 @@ export const router = createRouter({
 router.beforeEach((to, from, next) => {
     const access_token = useLocalStorage('access_token', null)
 
-    console.log(access_token.value)
     if (to.name != 'login') {
         if (!access_token.value) {
             return next({name: 'login'})
         }
     }
     
-
     next()
 })
