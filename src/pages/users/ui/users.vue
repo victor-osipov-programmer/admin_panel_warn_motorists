@@ -28,18 +28,19 @@ import { computed } from 'vue';
 import { ListUser } from '@/entities/user';
 import { Loading } from '@/shared/ui/loading';
 import { useUserModel } from '@/entities/user';
+import { formatPhone } from '@/shared/libs';
 
 const user_model = useUserModel()
-// user_model.fetchUsers()
+user_model.fetchUsers()
 
 const users = computed(() => {
     return user_model.users.map((user) => ({
         id: user.id,
         first_name: user.name,
-        telephone: user.phone,
+        telephone: formatPhone(user.phone),
         number_cars: 1,
         end_subscription: 1722168504214,
-        cars: ['https://avatars.mds.yandex.net/get-vertis-journal/3911415/2021-05-10-890ccf176b404309b2345c57b7f80957.jpg_1622737442641/orig']
+        cars: []
     }))
 })
 

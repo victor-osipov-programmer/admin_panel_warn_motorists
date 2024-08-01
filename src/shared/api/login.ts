@@ -1,5 +1,6 @@
 import { useLocalStorage } from "@vueuse/core";
 import { http } from "./http";
+import axios from "axios";
 
 export async function fetchLogin(username: string, password: string) {
     const { data } = await http.put('/admin/login', {
@@ -12,7 +13,9 @@ export async function fetchLogin(username: string, password: string) {
     const refresh_token = useLocalStorage('refresh_token', null)
     refresh_token.value = data.refresh;
 
-    http.defaults.headers.common['Authorization'] = `Bearer ${access_token.value}`
+    console.log(1, http.defaults.headers.common['Authorization'])
+    axios.defaults.headers.common['Authorization'] = `Bearer ${data.access}`
+    console.log(2, http.defaults.headers.common['Authorization'])
 
     return data;
 }
