@@ -12,7 +12,7 @@
             </template>
 
             <template #content>
-                <DataView data-key="id" :value="application_model.applications" paginator :rows="5"
+                <DataView data-key="id" :value="application_model.applications" :rows="application_model.currentPageSize"
                     :sortOrder="sortByDate.value" :sortField="'application_time'">
                     <template #list="slotProps">
                         <div class="py-5">
@@ -28,11 +28,17 @@
                             Заявок больше нет
                         </div>
                     </template>
+
+                    <template #footer>
+                        <Paginator v-model:first="application_model.offset" :rows="application_model.currentPageSize"
+                            :totalRecords="application_model.total_applications"></Paginator>
+                    </template>
                 </DataView>
             </template>
         </Card>
 
-        <application-cars v-model:visible="dialog" header="Заявка" :application_cars @deleteApplication="deleteApplication" />
+        <application-cars v-model:visible="dialog" header="Заявка" :application_cars
+            @deleteApplication="deleteApplication" />
     </div>
 </template>
 
@@ -43,7 +49,7 @@ import { ListApplication } from '@/entities/application';
 import { ApplicationCars } from '@/widgets/application-cars';
 
 const application_model = useApplicationModel()
-application_model.fetchApplications()
+application_model.getApplications()
 
 const sortByDate = ref({ label: 'Сначала старые', value: 1 })
 const sortOptions = ref([

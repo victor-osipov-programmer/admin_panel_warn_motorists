@@ -32,7 +32,6 @@ export const useUserModel = defineStore('user', () => {
 
     return {
         users,
-        fetchUsers,
         offset,
         total_users,
         getUsers,

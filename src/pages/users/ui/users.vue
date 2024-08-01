@@ -1,6 +1,6 @@
 <template>
     <div class="users">
-        <DataView data-key="id" :value="user_model.users" :rows="5">
+        <DataView data-key="id" :value="user_model.users" :rows="user_model.currentPageSize">
             <template #header>
                 <div class="text-grey my-3">
                     Пользователи
