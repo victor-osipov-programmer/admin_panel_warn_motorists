@@ -1,16 +1,41 @@
 import { defineStore } from 'pinia'
-import { IUserApi, UserApi } from '../index'
+import { useOffsetPagination } from '@vueuse/core'
+import { fetchUsers } from '../api'
+import { computed, ref } from 'vue'
+import { IUserApi } from '../types'
 
-export const useUserModel = defineStore('user', {
-    state: (): {
-        users: IUserApi[]
-    } => ({
-        // users: [{ "id": "5d79b463-d522-43e6-a5a2-7f8cea6dc213", "phone": "79189144104", "name": "user5d79b463-d522-43e6-a5a2-7f8cea6dc213", "avatar": "", "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjQ3NDE0NjcsImlkIjoiNWQ3OWI0NjMtZDUyMi00M2U2LWE1YTItN2Y4Y2VhNmRjMjEzIn0.62QfxzSlVIi3GNf2CjL4wgFhYU8uxNRrLDpOJ3NkuZI", "fbToken": "", "subscriptionLevel": "0" }, { "id": "6e082858-1ba1-4ced-824b-54a81499a09d", "phone": "79064262476", "name": "user6e082858-1ba1-4ced-824b-54a81499a09d", "avatar": "", "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjQwNzg4NDQsImlkIjoiNmUwODI4NTgtMWJhMS00Y2VkLTgyNGItNTRhODE0OTlhMDlkIn0.wjIsfpkiop6C7S8qFm-Q-zw0HKuE3q_dxdTH1bzoy2c", "fbToken": "", "subscriptionLevel": "0" }, { "id": "0e4b47de-3dac-4b1a-b069-a3774ebcf076", "phone": "79897195754", "name": "user0e4b47de-3dac-4b1a-b069-a3774ebcf076", "avatar": "", "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjQ2ODU3MjgsImlkIjoiMGU0YjQ3ZGUtM2RhYy00YjFhLWIwNjktYTM3NzRlYmNmMDc2In0.AjeLcoCHDz5ct7v9jzSaDlE4mZSMAKeQRyssgKb_GMk", "fbToken": "", "subscriptionLevel": "0" }, { "id": "0371d268-198f-4309-8da6-a755d9b59088", "phone": "79186162999", "name": "user0371d268-198f-4309-8da6-a755d9b59088", "avatar": "", "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjQ2OTY3MDYsImlkIjoiMDM3MWQyNjgtMTk4Zi00MzA5LThkYTYtYTc1NWQ5YjU5MDg4In0.ib0ezpBGnSr6OaiRr-iH-jUKIG7b8C2j3-NGV1mWvcc", "fbToken": "", "subscriptionLevel": "0" }, { "id": "ed1d3794-3968-4a99-84ed-e6190a49c03a", "phone": "79184085681", "name": "usered1d3794-3968-4a99-84ed-e6190a49c03a", "avatar": "", "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjQ3NDgwOTYsImlkIjoiZWQxZDM3OTQtMzk2OC00YTk5LTg0ZWQtZTYxOTBhNDljMDNhIn0.TvGckBCxBAEZyjihVipnRzGQrbC5eWR948tXiVWsS7U", "fbToken": "", "subscriptionLevel": "0" }, { "id": "fde7495c-b937-4a46-8e71-fc075e2d9a00", "phone": "79608166191", "name": "userfde7495c-b937-4a46-8e71-fc075e2d9a00", "avatar": "", "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjQ3ODI4MzUsImlkIjoiZmRlNzQ5NWMtYjkzNy00YTQ2LThlNzEtZmMwNzVlMmQ5YTAwIn0.w8M9RTpaaRnmhHD9G-r6RJHefwIHLl25DaJZltdLjW4", "fbToken": "", "subscriptionLevel": "0" }, { "id": "108328b7-3106-4ad1-9fa6-01a3b0c53fc3", "phone": "79525690243", "name": "user108328b7-3106-4ad1-9fa6-01a3b0c53fc3", "avatar": "", "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjQyMzUxOTcsImlkIjoiMTA4MzI4YjctMzEwNi00YWQxLTlmYTYtMDFhM2IwYzUzZmMzIn0.Nq9-ZVSRkw-Zw9NEue0m679Vdmn-REBvswFC9_kswIM", "fbToken": "", "subscriptionLevel": "0" }, { "id": "82343814-08eb-40d4-b153-fcf3e6a2b632", "phone": "79781791694", "name": "user82343814-08eb-40d4-b153-fcf3e6a2b632", "avatar": "", "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjQyNDEyOTEsImlkIjoiODIzNDM4MTQtMDhlYi00MGQ0LWIxNTMtZmNmM2U2YTJiNjMyIn0.0XNmfl7x4V8daRzQ-eDpQloHylCxgoLC442-2IGEo8g", "fbToken": "", "subscriptionLevel": "0" }]
-        users: []
-    }),
-    actions: {
-        async fetchUsers() {
-            this.users = await UserApi.fetchUsers()
+export const useUserModel = defineStore('user', () => {
+    const total_users = ref(8)
+    const users = ref<IUserApi[]>([])
+    const pagination = useOffsetPagination({
+        total: total_users.value,
+        page: 1,
+        pageSize: 5,
+        onPageChange: getUsers,
+        onPageSizeChange: getUsers,
+    })
+
+    async function getUsers() {
+        const response = await fetchUsers()
+        users.value = response.users;
+        // total_users.value = response.total;
+    }
+
+    const offset = computed({
+        get() {
+            return pagination.currentPage.value * pagination.currentPageSize.value - pagination.currentPageSize.value
+        },
+        set(new_offset) {
+            pagination.currentPage.value = new_offset / pagination.currentPageSize.value + 1
         }
+    })
+
+    return {
+        users,
+        fetchUsers,
+        offset,
+        total_users,
+        getUsers,
+        ...pagination
     }
 })

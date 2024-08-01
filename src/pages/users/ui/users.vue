@@ -1,6 +1,6 @@
 <template>
     <div class="users">
-        <DataView data-key="id" :value="user_model.users" paginator :rows="5">
+        <DataView data-key="id" :value="user_model.users" :rows="5">
             <template #header>
                 <div class="text-grey my-3">
                     Пользователи
@@ -18,6 +18,11 @@
                     Пользователи не найдены
                 </div>
             </template>
+
+            <template #footer>
+                <Paginator v-model:first="user_model.offset" :rows="user_model.currentPageSize"
+                    :totalRecords="user_model.total_users"></Paginator>
+            </template>
         </DataView>
 
         <user-cars v-model:visible="dialog" header="Машины пользователя" :user_cars />
@@ -31,7 +36,7 @@ import { UserCars } from '@/widgets/user-cars';
 import { ref } from 'vue';
 
 const user_model = useUserModel()
-user_model.fetchUsers()
+user_model.getUsers()
 
 const user_cars = ref([])
 const dialog = ref(false)
@@ -41,6 +46,4 @@ function openDialog() {
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
