@@ -45,10 +45,10 @@ import { ApplicationCars } from '@/widgets/application-cars';
 const application_model = useApplicationModel()
 application_model.fetchApplications()
 
-const sortByDate = ref({ label: 'Сночало старые', value: 1 })
+const sortByDate = ref({ label: 'Сначала старые', value: 1 })
 const sortOptions = ref([
-    { label: 'Сночало новые', value: -1 },
-    { label: 'Сночало старые', value: 1 },
+    { label: 'Сначала новые', value: -1 },
+    { label: 'Сначала старые', value: 1 },
 ]);
 const application_id = ref<null | string>(null)
 const application_cars = computed(() => {
