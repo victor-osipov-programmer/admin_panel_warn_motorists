@@ -17,6 +17,7 @@ import { window_width } from '@/shared/libs';
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import { IUserApi, ListUser } from '@/entities/user';
+import { AppButton } from '@/shared/ui/app-button';
 
 const confirm = useConfirm();
 const toast = useToast();

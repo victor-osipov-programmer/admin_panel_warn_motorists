@@ -32,7 +32,7 @@
             </template>
         </Card>
 
-        <dialog-galleria v-model:visible="dialog" header="Заявка" :application_cars @deleteApplication="deleteApplication" />
+        <application-cars v-model:visible="dialog" header="Заявка" :application_cars @deleteApplication="deleteApplication" />
     </div>
 </template>
 
@@ -40,8 +40,7 @@
 import { useApplicationModel } from '@/entities/application';
 import { computed, ref } from 'vue';
 import { ListApplication } from '@/entities/application';
-import { DialogGalleria } from '@/features/dialog-galleria';
-
+import { ApplicationCars } from '@/widgets/application-cars';
 
 const application_model = useApplicationModel()
 application_model.fetchApplications()
@@ -53,6 +52,7 @@ const sortOptions = ref([
 ]);
 const application_id = ref<null | string>(null)
 const application_cars = computed(() => {
+    // @ts-ignore
     return application_model.applications.find((application) => application.id === application_id.value)?.cars ?? []
 })
 const dialog = ref(false)
