@@ -1,25 +1,35 @@
 <template>
     <div class="users">
-        <v-list lines="two">
-            <v-list-subheader>Пользователи</v-list-subheader>
-
-            <v-list-group v-for="user in users" :key="user.id">
-                <template v-slot:activator="{ props }">
-                    <list-user v-bind="props" :user />
-                </template>
-
-                <div class="pl-8 py-8 pr-5 user-content">
-
-                    <div class="cars">
-                        <v-img v-for="car in user.cars" :src="car" height="300" cover rounded>
-                            <template v-slot:placeholder>
-                                <loading />
-                            </template>
-                        </v-img>
-                    </div>
+        <DataView data-key="id" :value="users" paginator :rows="5">
+            <template #header>
+                <div class="text-grey my-3">
+                    Пользователи
                 </div>
-            </v-list-group>
-        </v-list>
+            </template>
+
+            <template #list="slotProps">
+                <div class="py-5">
+
+                    <v-list-group v-for="user in slotProps.items" :key="user.id">
+                        <template v-slot:activator="{ props }">
+                            <list-user v-bind="props" :user />
+                        </template>
+
+                        <div class="pl-8 py-8 pr-5 user-content">
+
+                            <div class="cars">
+                                <v-img v-for="car in user.cars" :src="car" height="300" cover rounded>
+                                    <template v-slot:placeholder>
+                                        <loading />
+                                    </template>
+                                </v-img>
+                            </div>
+                        </div>
+                    </v-list-group>
+
+                </div>
+            </template>
+        </DataView>
     </div>
 </template>
 
