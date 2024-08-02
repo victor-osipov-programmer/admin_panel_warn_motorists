@@ -3,9 +3,9 @@
         <app-button @click.stop="confirmGift" size="min" icon="mdi-gift"
             tooltip="Подарить подписку">Подарить подписку</app-button>
 
-        <app-button :to="{ name: 'personal-mailing', params: { id: user.id } }" @click.stop
+        <!-- <app-button :to="{ name: 'personal-mailing', params: { id: user.id } }" @click.stop
             size="min" icon="mdi-email" tooltip="Персональная рассылка">Персональная
-            рассылка</app-button>
+            рассылка</app-button> -->
 
         <app-button @click.stop="confirmBan" size="min" color="deep-orange-darken-4"
             icon="mdi-lock" tooltip="Блокировать пользователя">Блокировать</app-button>

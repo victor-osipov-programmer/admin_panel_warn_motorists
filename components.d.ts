@@ -16,6 +16,8 @@ declare module 'vue' {
     DataTable: typeof import('primevue/datatable')['default']
     DataView: typeof import('primevue/dataview')['default']
     Dialog: typeof import('primevue/dialog')['default']
+    FileUpload: typeof import('primevue/fileupload')['default']
+    FloatLabel: typeof import('primevue/floatlabel')['default']
     Galleria: typeof import('primevue/galleria')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     Image: typeof import('primevue/image')['default']

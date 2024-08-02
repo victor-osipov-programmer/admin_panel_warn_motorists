@@ -12,7 +12,7 @@ router.beforeEach((to, from, next) => {
 
     if (to.name != 'login') {
         if (!access_token.value) {
-            return next({name: 'login'})
+            // return next({name: 'login'})
         }
     }
     
