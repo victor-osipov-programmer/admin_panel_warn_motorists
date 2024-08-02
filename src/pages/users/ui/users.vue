@@ -21,8 +21,8 @@
             </template>
 
             <template #footer>
-                <Paginator v-model:first="user_model.offset" :rows="user_model.currentPageSize"
-                    :totalRecords="user_model.total_users"></Paginator>
+                <Paginator v-model:rows="user_model.currentPageSize" v-model:first="user_model.offset" 
+                    :totalRecords="user_model.total_users" :rowsPerPageOptions="[5, 10, 15]"></Paginator>
             </template>
         </DataView>
 

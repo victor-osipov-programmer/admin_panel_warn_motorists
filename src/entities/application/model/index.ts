@@ -5,10 +5,10 @@ import { computed, ref } from 'vue'
 import { IApplicationApi } from '../types'
 
 export const useApplicationModel = defineStore('application', () => {
-    const total_applications = ref(1)
+    const total_applications = ref(0)
     const applications = ref<IApplicationApi[]>([])
     const pagination = useOffsetPagination({
-        total: total_applications.value,
+        total: total_applications,
         page: 1,
         pageSize: 5,
         onPageChange: fetchApplications,
@@ -18,7 +18,7 @@ export const useApplicationModel = defineStore('application', () => {
     async function getApplications() {
         const response = await fetchApplications()
         applications.value = response.applications;
-        // total_applications.value = response.total;
+        total_applications.value = response.total_requests;
     }
 
     const offset = computed({

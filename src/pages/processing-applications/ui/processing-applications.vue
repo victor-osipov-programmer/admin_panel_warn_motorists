@@ -30,8 +30,8 @@
                     </template>
 
                     <template #footer>
-                        <Paginator v-model:first="application_model.offset" :rows="application_model.currentPageSize"
-                            :totalRecords="application_model.total_applications"></Paginator>
+                        <Paginator v-model:rows="application_model.currentPageSize" v-model:first="application_model.offset"
+                            :totalRecords="application_model.total_applications" :rowsPerPageOptions="[5, 10, 15]"></Paginator>
                     </template>
                 </DataView>
             </template>

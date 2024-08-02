@@ -5,10 +5,10 @@ import { computed, ref } from 'vue'
 import { IUserApi } from '../types'
 
 export const useUserModel = defineStore('user', () => {
-    const total_users = ref(8)
+    const total_users = ref(0)
     const users = ref<IUserApi[]>([])
     const pagination = useOffsetPagination({
-        total: total_users.value,
+        total: total_users,
         page: 1,
         pageSize: 5,
         onPageChange: getUsers,
@@ -18,7 +18,7 @@ export const useUserModel = defineStore('user', () => {
     async function getUsers() {
         const response = await fetchUsers()
         users.value = response.users;
-        // total_users.value = response.total;
+        total_users.value = response.users_total;
     }
 
     const offset = computed({
