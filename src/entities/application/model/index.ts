@@ -11,8 +11,8 @@ export const useApplicationModel = defineStore('application', () => {
         total: total_applications,
         page: 1,
         pageSize: 5,
-        onPageChange: fetchApplications,
-        onPageSizeChange: fetchApplications,
+        onPageChange: getApplications,
+        onPageSizeChange: getApplications,
     })
 
     async function getApplications() {
