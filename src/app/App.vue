@@ -32,7 +32,20 @@
 </template>
 
 <script setup lang="ts">
+import { ToastServiceMethods } from 'primevue/toastservice';
+import { useToast } from 'primevue/usetoast';
 import { ref } from 'vue';
+import { Router, useRouter } from 'vue-router';
+
+window.toast = useToast()
+window.router = useRouter()
+
+declare global {
+    interface Window {
+        toast: ToastServiceMethods;
+        router: Router;
+    }
+}
 
 const drawer = ref(true)
 const rail = ref(true)

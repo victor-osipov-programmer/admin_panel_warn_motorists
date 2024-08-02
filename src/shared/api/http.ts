@@ -22,10 +22,16 @@ http.interceptors.response.use(response => response, async (error) => {
 
     if (!error.response) {
         console.error('Сервер не отвечает', error.request); // Нет ответа от сервера
+        window.toast.add({ severity: 'error', summary: 'Сервер не отвечает', detail: 'Плохой интернет или ошибка на стороне сервера', life: 3000 });
     } else if (!error.response.data) {
         console.error('Нет данных в ответе', error.response); // Ответ не содержит данных
     } else {
         console.error('Сервер вернул ошибку:', error.response); // Ошибка пришла от сервера
+
+        if (originalRequest._retry) {
+            window.toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Подтвердите личность', life: 3000 });
+            return window.router.push({'name': 'login'})
+        }
 
         if (error.response.data == 'invalid token' && !originalRequest._retry) {
             originalRequest._retry = true;
@@ -35,7 +41,12 @@ http.interceptors.response.use(response => response, async (error) => {
 
             const params = new URLSearchParams()
             params.append('role', 'admin')
-            const { data } = await http.get('/auth/token/refresh', { params, headers: { 'Authorization': `Bearer ${refresh_token.value}` } })
+            const { status: refresh_status, data } = await http.get('/auth/token/refresh', { params, headers: { 'Authorization': `Bearer ${refresh_token.value}` } })
+
+            if (refresh_status !== 200) {
+                window.toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Подтвердите личность', life: 3000 });
+                return window.router.push({'name': 'login'})
+            }
 
             access_token.value = data.token
             refresh_token.value = data.refresh
