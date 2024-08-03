@@ -1,96 +1,134 @@
 <template>
     <div class="statistics pa-5">
-        
-
-        <div class="card">
-            <Card>
-                <template #title>СТАТИСТИКА (test)</template>
-                <template #content>
-                    <Chart type="bar" :data="chartData" :options="chartOptions" class="h-[30rem] w-[500px]" />
+        <div class="d-flex justify-center mb-8">
+            <DatePicker inline v-on:today-click="todayClick"  selectionMode="range" v-model="date_range"
+                :max-date="max_date">
+                <template #footer>
+                    <div class="d-flex justify-space-between pt-1">
+                        <Button severity="secondary" @click="todayClick" text size="small">Сегодня</Button>
+                        <Button severity="secondary" @click="clearClick" text size="small">Очистить</Button>
+                    </div>
                 </template>
-            </Card>
-            
+            </DatePicker>
         </div>
+
+        <Card class="mb-8">
+            <template #content>
+                <Chart type="line" :data="total_earnings" />
+            </template>
+        </Card>
+
+        <Card>
+            <template #content>
+                <Chart type="line" :data="count_subscribers" />
+            </template>
+        </Card>
     </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
+<script lang="ts" setup>
+import { ref, computed } from "vue";
 
-onMounted(() => {
-    chartData.value = setChartData();
-    chartOptions.value = setChartOptions();
-});
+const date = new Date();
+const max_offset_date = ref(30)
+date.setDate(date.getDate() - max_offset_date.value)
 
-const chartData = ref();
-const chartOptions = ref();
+const date_range = ref([date, new Date()])
 
-const setChartData = () => {
-    const documentStyle = getComputedStyle(document.documentElement);
+function todayClick() {
+    // @ts-ignore
+    date_range.value = [new Date(), null]
+}
+function clearClick() {
+    // @ts-ignore
+    date_range.value = null
+}
+
+interface IStatistic {
+    date: string,
+    count: number,
+    total_earnings: number
+}
+const statistics = ref < IStatistic[] > ([
+    {
+        date: new Date().toDateString(),
+        count: 2,
+        total_earnings: 200
+    },
+    {
+        date: new Date().toDateString(),
+        count: 5,
+        total_earnings: 500
+    },
+    {
+        date: new Date().toDateString(),
+        count: 3,
+        total_earnings: 300
+    },
+    {
+        date: new Date().toDateString(),
+        count: 1,
+        total_earnings: 100
+    },
+    {
+        date: new Date().toDateString(),
+        count: 6,
+        total_earnings: 600
+    },
+])
+
+const max_date = computed(() => {
+    if (date_range.value && date_range.value[0]) {
+        const min_date = new Date(date_range.value[0])
+        min_date.setDate(new Date(min_date).getDate() + max_offset_date.value)
+
+        return new Date(Math.min(+min_date, +new Date()));
+    } else {
+        return new Date();
+    }
+})
+
+const total_earnings = computed(() => {
+    const label = 'Доход'
+    const labels: string[] = []
+    const data: number[] = []
+
+    statistics.value.forEach(el => {
+        labels.push(new Date(el.date).toLocaleDateString())
+        data.push(el.total_earnings)
+    })
 
     return {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        labels,
         datasets: [
             {
-                label: 'My First dataset',
-                backgroundColor: documentStyle.getPropertyValue('--p-cyan-500'),
-                borderColor: documentStyle.getPropertyValue('--p-cyan-500'),
-                data: [65, 59, 80, 81, 56, 55, 40]
-            },
-            {
-                label: 'My Second dataset',
-                backgroundColor: documentStyle.getPropertyValue('--p-gray-500'),
-                borderColor: documentStyle.getPropertyValue('--p-gray-500'),
-                data: [28, 48, 40, 19, 86, 27, 90]
+                label,
+                data,
             }
         ]
-    };
-};
-const setChartOptions = () => {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--p-text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--p-text-muted-color');
-    const surfaceBorder = documentStyle.getPropertyValue('--p-content-border-color');
+    }
+})
+
+const count_subscribers = computed(() => {
+    const label = 'Количество подписок'
+    const labels: string[] = []
+    const data: number[] = []
+
+    statistics.value.forEach(el => {
+        labels.push(new Date(el.date).toLocaleDateString())
+        data.push(el.count)
+    })
 
     return {
-        maintainAspectRatio: false,
-        aspectRatio: 0.8,
-        plugins: {
-            legend: {
-                labels: {
-                    color: textColor
-                }
+        labels,
+        datasets: [
+            {
+                label,
+                data,
             }
-        },
-        scales: {
-            x: {
-                ticks: {
-                    color: textColorSecondary,
-                    font: {
-                        weight: 500
-                    }
-                },
-                grid: {
-                    display: false,
-                    drawBorder: false
-                }
-            },
-            y: {
-                ticks: {
-                    color: textColorSecondary
-                },
-                grid: {
-                    color: surfaceBorder,
-                    drawBorder: false
-                }
-            }
-        }
-    };
-}
+        ]
+    }
+})
 </script>
 
-<style lang="scss" scoped>
-.card {
-    max-width: 600px;
-}
-</style>
+<style lang="scss" scoped></style>

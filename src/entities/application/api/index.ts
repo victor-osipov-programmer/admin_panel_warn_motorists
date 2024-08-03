@@ -8,6 +8,8 @@ export async function fetchApplications(): Promise<{ total_requests: number, app
     
     params.append('limit', application_model.currentPageSize.toString())
     params.append('offset', (application_model.currentPage * application_model.currentPageSize - application_model.currentPageSize).toString())
+    params.append('status', application_model.status_applications.value)
+    params.append('age', application_model.age_applications.value)
 
     const data = (await http.get('/admin/requests', { params })).data
     const requests = data.requests

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { useOffsetPagination } from '@vueuse/core'
 import { fetchApplications } from '../api'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { IApplicationApi } from '../types'
 
 export const useApplicationModel = defineStore('application', () => {
@@ -30,11 +30,32 @@ export const useApplicationModel = defineStore('application', () => {
         }
     })
 
+    const age_options = ref([
+        { label: 'Сначала старые', value: 'old' },
+        { label: 'Сначала новые', value: 'new' },
+    ]);
+    const status_options = ref([
+        { label: 'В ожидании', value: 'pending' },
+        { label: 'Отклоненные', value: 'declined' },
+        { label: 'Все', value: '' },
+    ]);
+    
+    const age_applications = ref(age_options.value[0])
+    const status_applications = ref(status_options.value[0])
+
+    watch([age_applications, status_applications], () => {
+        getApplications()
+    })
+
     return {
         applications,
         offset,
         total_applications,
         getApplications,
+        age_applications,
+        status_applications,
+        age_options,
+        status_options,
         ...pagination
     }
 })
