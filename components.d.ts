@@ -22,6 +22,7 @@ declare module 'vue' {
     Galleria: typeof import('primevue/galleria')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     Image: typeof import('primevue/image')['default']
+    InputMask: typeof import('primevue/inputmask')['default']
     InputText: typeof import('primevue/inputtext')['default']
     Paginator: typeof import('primevue/paginator')['default']
     RadioButton: typeof import('primevue/radiobutton')['default']

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import { useOffsetPagination } from '@vueuse/core'
+import { useDebouncedRefHistory, useOffsetPagination } from '@vueuse/core'
 import { fetchUsers } from '../api'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { IUserApi } from '../types'
 
 export const useUserModel = defineStore('user', () => {
@@ -17,7 +17,7 @@ export const useUserModel = defineStore('user', () => {
 
     async function getUsers() {
         const response = await fetchUsers()
-        users.value = response.users;
+        users.value = response.users ?? [];
         total_users.value = response.users_total;
     }
 
@@ -30,11 +30,26 @@ export const useUserModel = defineStore('user', () => {
         }
     })
 
+    const phone = ref('')
+    const username = ref('')
+
+    const online = ref<null | Date>(null)
+    watch([phone, username], () => {
+        online.value = new Date()
+    })
+
+    const { history } = useDebouncedRefHistory(online, { debounce: 1000 })
+    watch(history, () => {
+        getUsers()
+    })
+
     return {
         users,
         offset,
         total_users,
         getUsers,
+        phone,
+        username,
         ...pagination
     }
 })

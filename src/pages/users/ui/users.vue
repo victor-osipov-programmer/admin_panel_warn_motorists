@@ -2,9 +2,19 @@
     <div class="users">
         <DataView data-key="id" :value="user_model.users" :rows="user_model.currentPageSize">
             <template #header>
-                <div class="text-grey my-3">
-                    Пользователи
+                <div class="d-flex ga-10 align-center">
+                    <div class="text-grey my-3">
+                        Пользователи
+                    </div>
+
+                    <div class="inputs d-flex  ga-5">
+                        <InputText class="input" v-model="user_model.phone" placeholder="Номер" />
+                        <InputText class="input" v-model="user_model.username" placeholder="Имя" />
+                    </div>
+
                 </div>
+
+
             </template>
 
             <template #list="slotProps">
@@ -21,7 +31,7 @@
             </template>
 
             <template #footer>
-                <Paginator v-model:rows="user_model.currentPageSize" v-model:first="user_model.offset" 
+                <Paginator v-model:rows="user_model.currentPageSize" v-model:first="user_model.offset"
                     :totalRecords="user_model.total_users" :rowsPerPageOptions="[5, 10, 15]"></Paginator>
             </template>
         </DataView>
@@ -47,10 +57,18 @@ const user_cars = computed((): ICarOwned[] => {
 })
 const dialog = ref(false)
 
+
 function openDialog(id: string) {
     user_id.value = id;
     dialog.value = true;
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.input {
+    max-width: 160px;
+}
+.inputs {
+    max-height: 40px;
+}
+</style>
