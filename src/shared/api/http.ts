@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export const http = axios.create({
     baseURL: 'https://parcomat.ru',
-    timeout: 10000,
+    timeout: 5000,
     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
 })
 

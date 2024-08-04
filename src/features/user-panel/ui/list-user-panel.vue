@@ -50,7 +50,7 @@ import { IUserApi, ListUser } from '@/entities/user';
 import { AppButton } from '@/shared/ui/app-button';
 import { ref } from "vue";
 import { http } from "@/shared/api";
-import { addZero } from "@/shared/libs";
+import { addZero, dateToString } from "@/shared/libs";
 
 const subscription_end = ref<null | Date>(null)
 const subscription_level = ref<null | number>(null)
@@ -79,7 +79,7 @@ async function donateSubscription() {
 
     const params = new URLSearchParams()
     const date = subscription_end.value;
-    params.append('end_date', `${addZero(date.getDate())}-${addZero(date.getMonth() + 1)}-${date.getFullYear()}`)
+    params.append('end_date', dateToString(date))
 
     await http.put('/admin/gift/' + props.user.id, { subscriptionLevel: subscription_level.value }, { params })
 
