@@ -1,9 +1,11 @@
 <template>
     <div class="statistics pa-5">
+        <h2 class="statistics__header mb-5">Статистика</h2>
+
         <Card class="mb-8">
             <template #content>
-                <div class="d-flex justify-center">
-                    <DatePicker inline v-on:today-click="todayClick" selectionMode="range" v-model="date_range"
+                <div>
+                    <DatePicker v-on:today-click="todayClick" selectionMode="range" v-model="date_range"
                         :max-date="max_date">
                         <template #footer>
                             <div class="d-flex justify-space-between pt-1">
@@ -16,17 +18,20 @@
             </template>
         </Card>
 
-        <Card class="mb-8">
-            <template #content>
-                <Chart  class="mb-15" type="bar" :data="total_earnings" />
-            </template>
-        </Card>
+        <div class="charts d-flex ga-5">
+            <Card class="chart">
+                <template #content>
+                    <Chart class="mb-15" type="bar" :data="total_earnings" />
+                </template>
+            </Card>
 
-        <Card>
-            <template #content>
-                <Chart class="mb-15" type="bar" :data="count_subscribers" />
-            </template>
-        </Card>
+            <Card class="chart">
+                <template #content>
+                    <Chart class="mb-15" type="bar" :data="count_subscribers" />
+                </template>
+            </Card>
+        </div>
+
     </div>
 </template>
 
@@ -164,7 +169,7 @@ const total_earnings = computed(() => {
 })
 
 const count_subscribers = computed(() => {
-    const label = 'Количество подписок'
+    const label = 'Количество купленных подписок'
     const labels: string[] = []
     const data: number[] = []
 
@@ -185,4 +190,11 @@ const count_subscribers = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.statistics__header {
+    text-align: center;
+}
+.chart {
+    width: 100%;
+}
+</style>

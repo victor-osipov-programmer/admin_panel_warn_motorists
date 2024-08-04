@@ -10,16 +10,18 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { http } from '@/shared/api';
 import { AppMailing } from '@/widgets/app-mailing';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const confirm = useConfirm();
 const toast = useToast();
 
-function confirmMailing(title, message, file) {
+function confirmMailing(title: string, message: string, file: File | null) {
     if (!title) {
         return toast.add({ severity: 'error', summary: 'Обязательное поле', detail: 'Укажите заголовок', life: 3000 });
     }

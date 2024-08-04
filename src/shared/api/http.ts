@@ -28,12 +28,11 @@ http.interceptors.response.use(response => response, async (error) => {
     } else {
         console.error('Сервер вернул ошибку:', error.response); // Ошибка пришла от сервера
 
-        if (originalRequest._retry) {
-            window.toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Подтвердите личность', life: 3000 });
-            return window.router.push({'name': 'login'})
+        if (originalRequest._retry || originalRequest.url == '/auth/token/refresh') {
+            return reportError()
         }
 
-        if (error.response.data == 'invalid token' && !originalRequest._retry) {
+        if (error.response.data == 'invalid token') {
             originalRequest._retry = true;
 
             const refresh_token = useLocalStorage('refresh_token', null)
@@ -41,20 +40,30 @@ http.interceptors.response.use(response => response, async (error) => {
 
             const params = new URLSearchParams()
             params.append('role', 'admin')
+
             const { status: refresh_status, data } = await http.get('/auth/token/refresh', { params, headers: { 'Authorization': `Bearer ${refresh_token.value}` } })
 
             if (refresh_status !== 200) {
-                window.toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Подтвердите личность', life: 3000 });
-                return window.router.push({'name': 'login'})
+                return reportError()
             }
 
             access_token.value = data.token
             refresh_token.value = data.refresh
-            
+
             http.defaults.headers.Authorization = 'Bearer ' + data.token;
             return http(originalRequest);
         }
     }
-    
+
     return Promise.reject(error); // Передаем ошибку обратно
 });
+
+function reportError() {
+    const refresh_token = useLocalStorage('refresh_token', null)
+    const access_token = useLocalStorage('access_token', null)
+    refresh_token.value = null;
+    access_token.value = null;
+
+    window.toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Подтвердите личность', life: 3000 });
+    return window.router.push({ 'name': 'login' })
+}

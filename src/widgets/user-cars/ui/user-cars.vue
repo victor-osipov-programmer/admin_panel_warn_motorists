@@ -1,5 +1,11 @@
 <template>
-    <Dialog :header v-model:visible="visible" style="min-width: 350px;">
+    <Dialog v-model:visible="visible" style="min-width: 350px;">
+        <template #header>
+            <div class="pl-4 text-grey">
+                {{ header }}
+            </div>
+        </template>
+
         <DataTable :value="user_cars">
             <Column field="brand" header="Бренд"></Column>
             <Column field="number" header="Номер машины"></Column>
