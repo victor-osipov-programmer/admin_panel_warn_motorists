@@ -36,6 +36,7 @@
 </template>
 
 <script lang="ts" setup>
+import { addZero } from "@/shared/libs";
 import { ref, computed } from "vue";
 
 const date = new Date();
@@ -190,8 +191,6 @@ const count_subscribers = computed(() => {
 })
 
 function format(date: Date) {
-    const addZero = (number: number): string => `${number}`.length == 1 ? `0${number}` : `${number}`
-
     const day: string = addZero(date.getDate())
     const month: string = addZero(date.getMonth() + 1)
 

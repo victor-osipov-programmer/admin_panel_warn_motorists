@@ -28,6 +28,10 @@ http.interceptors.response.use(response => response, async (error) => {
     } else {
         console.error('Сервер вернул ошибку:', error.response); // Ошибка пришла от сервера
 
+        if (error.response.status === 500) {
+            window.toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Ошибка на стороне сервера', life: 3000 });
+        }
+
         if (originalRequest._retry || originalRequest.url == '/auth/token/refresh') {
             return reportError()
         }

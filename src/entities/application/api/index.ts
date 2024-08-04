@@ -2,7 +2,7 @@ import { http } from '@/shared/api'
 import type { IApplicationApi } from '../types'
 import { useApplicationModel } from '../model';
 
-export async function fetchApplications(): Promise<{ total_requests: number, applications: IApplicationApi[] }> {
+export async function fetchApplications(): Promise<{ found_requests: number, applications: IApplicationApi[] }> {
     const application_model = useApplicationModel();
     const params = new URLSearchParams();
     

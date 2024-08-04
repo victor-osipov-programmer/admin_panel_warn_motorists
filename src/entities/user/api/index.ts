@@ -2,7 +2,7 @@ import { http } from '@/shared/api'
 import type { IUserApi } from '../types'
 import { useUserModel } from '../model';
 
-export async function fetchUsers(): Promise<{ users_total: number, users: IUserApi[] }> {
+export async function fetchUsers(): Promise<{ found_users: number, users: IUserApi[] }> {
     const user_model = useUserModel();
     const params = new URLSearchParams();
     

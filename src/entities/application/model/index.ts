@@ -18,7 +18,7 @@ export const useApplicationModel = defineStore('application', () => {
     async function getApplications() {
         const response = await fetchApplications()
         applications.value = response.applications;
-        total_applications.value = response.total_requests;
+        total_applications.value = response.found_requests;
     }
 
     const offset = computed({

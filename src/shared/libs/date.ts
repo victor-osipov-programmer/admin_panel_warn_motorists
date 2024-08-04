@@ -1,0 +1,1 @@
+export const addZero = (number: number): string => `${number}`.length == 1 ? `0${number}` : `${number}`

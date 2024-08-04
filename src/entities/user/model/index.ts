@@ -18,7 +18,7 @@ export const useUserModel = defineStore('user', () => {
     async function getUsers() {
         const response = await fetchUsers()
         users.value = response.users ?? [];
-        total_users.value = response.users_total;
+        total_users.value = response.found_users;
     }
 
     const offset = computed({
