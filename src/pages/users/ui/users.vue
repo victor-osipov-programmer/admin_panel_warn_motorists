@@ -29,7 +29,7 @@
             </template>
         </DataView>
 
-        <user-cars v-model:visible="dialog" header="Машины пользователя" :user_cars />
+        <user-cars v-model:visible="dialog" header="Пользователь" :user_cars :user />
     </div>
 </template>
 
@@ -45,8 +45,11 @@ const user_model = useUserModel()
 user_model.getUsers()
 
 const user_id = ref<null | string>(null)
+const user = computed(() => {
+    return user_model.users.find(user => user.id === user_id.value)
+})
 const user_cars = computed((): ICarOwned[] => {
-    const cars_owned = user_model.users.find(user => user.id === user_id.value)?.cars_owned;
+    const cars_owned = user.value?.cars_owned;
     return cars_owned ? cars_owned : []
 })
 const dialog = ref(false)

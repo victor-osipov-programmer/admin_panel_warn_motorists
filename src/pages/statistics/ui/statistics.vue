@@ -153,7 +153,7 @@ const total_earnings = computed(() => {
     const data: number[] = []
 
     statistics.value.forEach(el => {
-        labels.push(new Date(el.date).toLocaleDateString())
+        labels.push(format(new Date(el.date)))
         data.push(el.total_earnings)
     })
 
@@ -174,7 +174,7 @@ const count_subscribers = computed(() => {
     const data: number[] = []
 
     statistics.value.forEach(el => {
-        labels.push(new Date(el.date).toLocaleDateString())
+        labels.push(format(new Date(el.date)))
         data.push(el.count)
     })
 
@@ -188,6 +188,15 @@ const count_subscribers = computed(() => {
         ]
     }
 })
+
+function format(date: Date) {
+    const addZero = (number: number): string => `${number}`.length == 1 ? `0${number}` : `${number}`
+
+    const day: string = addZero(date.getDate())
+    const month: string = addZero(date.getMonth() + 1)
+
+    return `${day}.${month}`
+}
 </script>
 
 <style lang="scss" scoped>
