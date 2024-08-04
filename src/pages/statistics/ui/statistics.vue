@@ -1,26 +1,30 @@
 <template>
     <div class="statistics pa-5">
-        <div class="d-flex justify-center mb-8">
-            <DatePicker inline v-on:today-click="todayClick"  selectionMode="range" v-model="date_range"
-                :max-date="max_date">
-                <template #footer>
-                    <div class="d-flex justify-space-between pt-1">
-                        <Button severity="secondary" @click="todayClick" text size="small">Сегодня</Button>
-                        <Button severity="secondary" @click="clearClick" text size="small">Очистить</Button>
-                    </div>
-                </template>
-            </DatePicker>
-        </div>
+        <Card class="mb-8">
+            <template #content>
+                <div class="d-flex justify-center">
+                    <DatePicker inline v-on:today-click="todayClick" selectionMode="range" v-model="date_range"
+                        :max-date="max_date">
+                        <template #footer>
+                            <div class="d-flex justify-space-between pt-1">
+                                <Button severity="secondary" @click="todayClick" text size="small">Сегодня</Button>
+                                <Button severity="secondary" @click="clearClick" text size="small">Очистить</Button>
+                            </div>
+                        </template>
+                    </DatePicker>
+                </div>
+            </template>
+        </Card>
 
         <Card class="mb-8">
             <template #content>
-                <Chart type="line" :data="total_earnings" />
+                <Chart  class="mb-15" type="bar" :data="total_earnings" />
             </template>
         </Card>
 
         <Card>
             <template #content>
-                <Chart type="line" :data="count_subscribers" />
+                <Chart class="mb-15" type="bar" :data="count_subscribers" />
             </template>
         </Card>
     </div>
@@ -49,7 +53,57 @@ interface IStatistic {
     count: number,
     total_earnings: number
 }
-const statistics = ref < IStatistic[] > ([
+const statistics = ref<IStatistic[]>([
+    {
+        date: new Date().toDateString(),
+        count: 2,
+        total_earnings: 200
+    },
+    {
+        date: new Date().toDateString(),
+        count: 5,
+        total_earnings: 500
+    },
+    {
+        date: new Date().toDateString(),
+        count: 3,
+        total_earnings: 300
+    },
+    {
+        date: new Date().toDateString(),
+        count: 1,
+        total_earnings: 100
+    },
+    {
+        date: new Date().toDateString(),
+        count: 6,
+        total_earnings: 600
+    },
+    {
+        date: new Date().toDateString(),
+        count: 2,
+        total_earnings: 200
+    },
+    {
+        date: new Date().toDateString(),
+        count: 5,
+        total_earnings: 500
+    },
+    {
+        date: new Date().toDateString(),
+        count: 3,
+        total_earnings: 300
+    },
+    {
+        date: new Date().toDateString(),
+        count: 1,
+        total_earnings: 100
+    },
+    {
+        date: new Date().toDateString(),
+        count: 6,
+        total_earnings: 600
+    },
     {
         date: new Date().toDateString(),
         count: 2,

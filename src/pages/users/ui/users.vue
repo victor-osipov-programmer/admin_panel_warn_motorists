@@ -2,25 +2,18 @@
     <div class="users">
         <DataView data-key="id" :value="user_model.users" :rows="user_model.currentPageSize">
             <template #header>
-                <div class="d-flex ga-10 align-center">
-                    <div class="text-grey my-3">
-                        Пользователи
-                    </div>
-
-                    <div class="inputs d-flex  ga-5">
-                        <InputText class="input" v-model="user_model.phone" placeholder="Номер" />
-                        <InputText class="input" v-model="user_model.username" placeholder="Имя" />
-                    </div>
-
-                </div>
-
-
+                <list-header title="Пользователи">
+                    <InputText class="input" v-model="user_model.phone" placeholder="Номер" />
+                    <InputText class="input" v-model="user_model.username" placeholder="Имя" />
+                </list-header>
             </template>
 
             <template #list="slotProps">
-                <div class="py-5">
+                <div class="py-5 d-flex flex-column ga-1">
+
                     <list-user-panel @click="openDialog(user.id)" v-for="user in slotProps.items" :key="user.id"
                         :user />
+
                 </div>
             </template>
 
@@ -46,6 +39,7 @@ import { useUserModel } from '@/entities/user';
 import type { ICarOwned } from '@/entities/user';
 import { UserCars } from '@/widgets/user-cars';
 import { computed, ref } from 'vue';
+import { ListHeader } from '@/shared/ui/list-header';
 
 const user_model = useUserModel()
 user_model.getUsers()
@@ -65,10 +59,5 @@ function openDialog(id: string) {
 </script>
 
 <style lang="scss" scoped>
-.input {
-    max-width: 160px;
-}
-.inputs {
-    max-height: 40px;
-}
+
 </style>
