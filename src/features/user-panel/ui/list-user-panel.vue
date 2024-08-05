@@ -23,7 +23,9 @@
         <app-button :to="{ name: 'personal-mailing', params: { id: user.id } }" @click.stop size="min" icon="mdi-email"
             tooltip="Персональное сообщение">Персональное сообщение</app-button>
 
-        <app-button @click.stop="dialog_ban = true" size="min" color="deep-orange-darken-4" icon="mdi-lock"
+        <app-button v-if="user.is_blocked" @click.stop="unbanUser" size="min" color="green" icon="mdi-lock-open"
+            tooltip="Разблокировать пользователя">Разблокировать</app-button>
+        <app-button v-else @click.stop="dialog_ban = true" size="min" color="deep-orange-darken-4" icon="mdi-lock"
             tooltip="Блокировать пользователя">Блокировать</app-button>
 
         <Dialog v-model:visible="dialog_ban">
@@ -46,12 +48,14 @@
 
 <script lang="ts" setup>
 import { useToast } from "primevue/usetoast";
-import { IUserApi, ListUser } from '@/entities/user';
+import { IUserApi, ListUser, useUserModel } from '@/entities/user';
 import { AppButton } from '@/shared/ui/app-button';
 import { ref } from "vue";
 import { http } from "@/shared/api";
 import { dateToString } from "@/shared/libs";
 
+
+const user_model = useUserModel()
 const subscription_end = ref<null | Date>(null)
 const subscription_level = ref<null | { value: string }>(null)
 const subscription_levels = ref([
@@ -85,6 +89,7 @@ async function donateSubscription() {
         "subscriptionLevel": subscription_level.value.value
     }, { params })
 
+    user_model.getUsers()
     dialog_gift.value = false;
     toast.add({ severity: 'success', summary: 'Успешно', detail: 'Подписка подарена', life: 3000 });
 }
@@ -97,8 +102,15 @@ async function banUser() {
     params.append('hours', ban_hours.value.toString())
     await http.get('/admin/ban/' + props.user.id, { params })
 
+    user_model.getUsers()
     dialog_ban.value = false;
     toast.add({ severity: 'success', summary: 'Успешно', detail: 'Пользователь заблокирован', life: 3000 });
+}
+async function unbanUser() {
+    await http.get(`/admin/unban/${props.user.id}`)
+    
+    user_model.getUsers()
+    toast.add({ severity: 'success', summary: 'Успешно', detail: 'Пользователь разблокирован', life: 3000 });
 }
 </script>
 
