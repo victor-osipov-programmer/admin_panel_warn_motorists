@@ -15,11 +15,14 @@ import { http } from '@/shared/api';
 import { AppMailing } from '@/widgets/app-mailing';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter()
+const route = useRoute()
 const confirm = useConfirm();
 const toast = useToast();
+
+
 
 function confirmMailing(title: string, message: string, file: File | null) {
     if (!title) {
@@ -43,7 +46,6 @@ function confirmMailing(title: string, message: string, file: File | null) {
             label: 'Да'
         },
         accept: async () => {
-            return;
             let file_url = ''
 
             if (file) {
@@ -61,26 +63,16 @@ function confirmMailing(title: string, message: string, file: File | null) {
                 }
             }
 
-            const { status, data } = await http.post('/admin/push', {
+            await http.post(`/admin/push/${route.params.id}`, {
                 "image": file_url,
                 "message": message,
                 "title": title
             })
 
-            console.log('/admin/push status', status)
-            console.log('/admin/push data', data)
-
-            if (status === 200 || status == 201) {
-                return toast.add({ severity: 'success', summary: 'Успешно', detail: 'Сообщение отправлено', life: 3000 });
-            } else {
-                return toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Рассылка не удалась', life: 3000 });
-            }
-
+            return toast.add({ severity: 'success', summary: 'Успешно', detail: 'Сообщение отправлено', life: 3000 });
         }
     });
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

@@ -11,7 +11,7 @@
             </template>
 
             <template #list="slotProps">
-                <div class="py-5 d-flex flex-column ga-1">
+                <div class="py-5 d-flex flex-column ga-2">
 
                     <ListApplication @click="openDialog(application.id)" v-for="application in slotProps.items"
                         :key="application.id" :application />

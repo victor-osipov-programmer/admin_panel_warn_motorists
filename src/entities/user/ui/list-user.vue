@@ -1,13 +1,19 @@
 <template>
     <v-list-item :subtitle="formatPhone(user.phone)" :title="user.name">
         <template v-slot:prepend>
-            {{ cars_number }}
+            <div class="d-flex align-center">
+                <div class="d-flex align-center mr-3">
+                    {{ cars_number }}
 
-            <v-avatar>
-                <v-icon icon="mdi-car"></v-icon>
-            </v-avatar>
+                    <v-avatar>
+                        <v-icon icon="mdi-car"></v-icon>
+                    </v-avatar>
+                    <v-tooltip activator="parent">Количество машин</v-tooltip>
+                </div>
 
-            <v-tooltip activator="parent">Количество машин</v-tooltip>
+                <Avatar v-if="user.avatar" :image="user.avatar" class="mr-3 user-avatar" size="normal" shape="circle" />
+                <Avatar v-else icon="pi pi-user" class="mr-3" size="normal" shape="circle" />
+            </div>
         </template>
 
         <template v-slot:append>

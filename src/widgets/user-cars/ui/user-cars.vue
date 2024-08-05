@@ -1,7 +1,10 @@
 <template>
     <Dialog v-model:visible="visible" style="min-width: 350px;">
         <template #header>
-            <div class="pl-4 text-grey mr-5">
+            <div class="d-flex align-center pl-4 text-grey mr-10">
+                <Avatar v-if="user?.avatar" :image="user.avatar" class="mr-3 user-avatar" size="normal" shape="circle" />
+                <Avatar v-else icon="pi pi-user" class="mr-3" size="normal" shape="circle" />
+
                 <v-chip color="green" label>
                     <v-icon icon="mdi-card-account-details-outline" start></v-icon>
                     {{ user?.id }}
@@ -11,10 +14,10 @@
             </div>
         </template>
 
-        <div class="user-info pl-4 mb-5 py-3">
+        <div class="user-info pl-4 mb-10 pt-3">
             <div class="mb-5">
-                <div>{{ user?.name }}</div>
-                <div class="text-grey" v-if="user?.phone">{{ formatPhone(user?.phone) }}</div>
+                <div class="user-name">{{ user?.name }}</div>
+                <div class="user-phone text-grey" v-if="user?.phone">{{ formatPhone(user?.phone) }}</div>
             </div>
 
             <div class="d-flex ga-5">
@@ -73,5 +76,11 @@ const visible = defineModel<boolean>('visible')
 
 .subscription-end {
     flex-grow: 2;
+}
+.user-name {
+    font-size: 1.5rem;
+}
+.user-phone {
+    font-size: 1.25rem;
 }
 </style>

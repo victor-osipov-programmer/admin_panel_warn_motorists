@@ -50,10 +50,10 @@ import { IUserApi, ListUser } from '@/entities/user';
 import { AppButton } from '@/shared/ui/app-button';
 import { ref } from "vue";
 import { http } from "@/shared/api";
-import { addZero, dateToString } from "@/shared/libs";
+import { dateToString } from "@/shared/libs";
 
 const subscription_end = ref<null | Date>(null)
-const subscription_level = ref<null | number>(null)
+const subscription_level = ref<null | { value: string }>(null)
 const subscription_levels = ref([
     { value: '0' },
     { value: '1' },
@@ -81,7 +81,9 @@ async function donateSubscription() {
     const date = subscription_end.value;
     params.append('end_date', dateToString(date))
 
-    await http.put('/admin/gift/' + props.user.id, { subscriptionLevel: subscription_level.value }, { params })
+    await http.put(`/admin/gift/${props.user.id}`, {
+        "subscriptionLevel": subscription_level.value.value
+    }, { params })
 
     dialog_gift.value = false;
     toast.add({ severity: 'success', summary: 'Успешно', detail: 'Подписка подарена', life: 3000 });

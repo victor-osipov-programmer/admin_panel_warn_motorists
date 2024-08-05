@@ -23,11 +23,12 @@ http.interceptors.response.use(response => response, async (error) => {
     if (!error.response) {
         console.error('Сервер не отвечает', error.request); // Нет ответа от сервера
         window.toast.add({ severity: 'error', summary: 'Сервер не отвечает', detail: 'Плохой интернет или ошибка на стороне сервера', life: 3000 });
-    } else if (!error.response.data) {
-        console.error('Нет данных в ответе', error.response); // Ответ не содержит данных
     } else {
         console.error('Сервер вернул ошибку:', error.response); // Ошибка пришла от сервера
 
+        if (error.response.status === 400) {
+            window.toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Версия сайта устарела', life: 3000 });
+        }
         if (error.response.status === 500) {
             window.toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Ошибка на стороне сервера', life: 3000 });
         }
