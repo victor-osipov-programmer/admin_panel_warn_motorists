@@ -18,7 +18,7 @@
 
         <template v-slot:append>
             <div class="d-flex ga-3">
-                <v-chip v-if="user.subscription_end" color="deep-orange-darken-1" label>
+                <v-chip v-if="user.subscription_end" color="green" label>
                     <v-icon icon="mdi-fire" start></v-icon>
                     {{ new Date(user.subscription_end).toLocaleString() }}
 

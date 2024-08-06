@@ -2,7 +2,8 @@
     <Dialog v-model:visible="visible" style="min-width: 350px;">
         <template #header>
             <div class="d-flex align-center pl-4 text-grey mr-10">
-                <Avatar v-if="user?.avatar" :image="user.avatar" class="mr-3 user-avatar" size="normal" shape="circle" />
+                <Avatar v-if="user?.avatar" :image="user.avatar" class="mr-3 user-avatar" size="normal"
+                    shape="circle" />
                 <Avatar v-else icon="pi pi-user" class="mr-3" size="normal" shape="circle" />
 
                 <v-chip color="green" label>
@@ -20,15 +21,8 @@
                 <div class="user-phone text-grey" v-if="user?.phone">{{ formatPhone(user?.phone) }}</div>
             </div>
 
-            <div class="d-flex ga-5">
-                <v-chip class="subscription-level" color="green" label>
-                    <v-icon icon="mdi-chart-box" start></v-icon>
-                    {{ user?.subscriptionLevel }}
-
-                    <v-tooltip activator="parent" location="top">Уровень подписки</v-tooltip>
-                </v-chip>
-
-                <v-chip class="subscription-end" color="deep-orange-darken-1" label>
+            <!-- <div> -->
+                <v-chip class="subscription-end mr-2" color="green" label>
                     <v-icon icon="mdi-fire" start></v-icon>
                     <template v-if="user?.subscription_end">
                         {{ new Date(user?.subscription_end).toLocaleString() }}
@@ -39,7 +33,20 @@
 
                     <v-tooltip activator="parent" location="top">Подписка активна до</v-tooltip>
                 </v-chip>
-            </div>
+
+                <v-chip v-if="user?.subscription_end" class="subscription-level mr-2" color="green" label>
+                    <v-icon icon="mdi-chart-box" start></v-icon>
+                    {{ user?.subscriptionLevel }}
+
+                    <v-tooltip activator="parent" location="top">Уровень подписки</v-tooltip>
+                </v-chip>
+
+                <v-chip v-if="user?.is_blocked" class="user-status-lock" color="red" label>
+                    <v-icon icon="mdi-lock"></v-icon>
+
+                    <v-tooltip activator="parent" location="top">Пользователь заблокирован</v-tooltip>
+                </v-chip>
+            <!-- </div> -->
         </div>
 
 
@@ -77,9 +84,11 @@ const visible = defineModel<boolean>('visible')
 .subscription-end {
     flex-grow: 2;
 }
+
 .user-name {
     font-size: 1.5rem;
 }
+
 .user-phone {
     font-size: 1.25rem;
 }
