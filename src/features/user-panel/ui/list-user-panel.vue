@@ -36,7 +36,12 @@
             </template>
 
             <div class="d-flex flex-column ga-3">
-                <InputNumber placeholder="На сколько часов" v-model="ban_hours" fluid />
+                <InputNumber placeholder="На сколько часов" v-model="ban_hours" fluid :disabled="is_permanent_ban" />
+
+                <label class="d-flex align-center ga-1">
+                    <Checkbox v-model="is_permanent_ban" value="is_permanent_ban" :binary="true" />
+                    Без ограничений
+                </label>
             </div>
 
             <template #footer>
@@ -68,6 +73,7 @@ const dialog_gift = ref(false)
 const dialog_ban = ref(false)
 const toast = useToast();
 const ban_hours = ref<null | number>(null)
+const is_permanent_ban = ref(false)
 
 const props = defineProps<{
     user: IUserApi
@@ -94,21 +100,26 @@ async function donateSubscription() {
     toast.add({ severity: 'success', summary: 'Успешно', detail: 'Подписка подарена', life: 3000 });
 }
 async function banUser() {
-    if (!ban_hours.value) {
-        return toast.add({ severity: 'error', summary: 'Обязательное поле', detail: 'Укажите на сколько часов бан', life: 3000 });
+    if (ban_hours.value || is_permanent_ban.value) {
+        const params = new URLSearchParams()
+
+        if (is_permanent_ban.value) {
+            params.append('hours', '-1')
+        } else if (ban_hours.value) {
+            params.append('hours', ban_hours.value.toString())
+        }
+        await http.get('/admin/ban/' + props.user.id, { params })
+
+        user_model.getUsers()
+        dialog_ban.value = false;
+        toast.add({ severity: 'success', summary: 'Успешно', detail: 'Пользователь заблокирован', life: 3000 });
+    } else {
+        toast.add({ severity: 'error', summary: 'Обязательное поле', detail: 'Укажите на сколько часов бан', life: 3000 });
     }
-
-    const params = new URLSearchParams()
-    params.append('hours', ban_hours.value.toString())
-    await http.get('/admin/ban/' + props.user.id, { params })
-
-    user_model.getUsers()
-    dialog_ban.value = false;
-    toast.add({ severity: 'success', summary: 'Успешно', detail: 'Пользователь заблокирован', life: 3000 });
 }
 async function unbanUser() {
     await http.get(`/admin/unban/${props.user.id}`)
-    
+
     user_model.getUsers()
     toast.add({ severity: 'success', summary: 'Успешно', detail: 'Пользователь разблокирован', life: 3000 });
 }
