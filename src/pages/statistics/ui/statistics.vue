@@ -1,6 +1,6 @@
 <template>
     <div class="statistics pa-5">
-        <h2 class="statistics__header mb-5">Статистика</h2>
+        <h2 class="statistics__header mb-5 text-grey">Статистика</h2>
 
         <Card class="mb-8">
             <template #content>
@@ -120,10 +120,6 @@ const count_subscribers_data = computed(() => statisticsGenerator('Количе�
 </script>
 
 <style lang="scss" scoped>
-.statistics__header {
-    text-align: center;
-}
-
 .chart {
     width: 100%;
 }

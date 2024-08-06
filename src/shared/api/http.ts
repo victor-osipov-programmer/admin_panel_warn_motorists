@@ -26,6 +26,9 @@ http.interceptors.response.use(response => response, async (error) => {
     } else {
         console.error('Сервер вернул ошибку:', error.response); // Ошибка пришла от сервера
 
+        if (originalRequest.url == '/admin/login') {
+            return window.toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Неверный логин или пароль', life: 3000 });
+        }
         if (error.response.status === 400) {
             window.toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Версия сайта устарела', life: 3000 });
         }

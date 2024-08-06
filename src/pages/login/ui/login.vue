@@ -15,8 +15,8 @@
 
             <div class="inline-flex flex-col gap-2 mb-5">
                 <label for="password" class="text-primary-50 font-semibold">Password</label>
-                <InputText v-model="password" id="password" class="!bg-white/20 !border-0 !p-4 !text-primary-50 w-80" type="password" name="password">
-                </InputText>
+                <Password :feedback="false" toggleMask v-model="password" id="password" class="!bg-white/20 !border-0 !p-4 !text-primary-50 w-80 input-password" type="password" name="password">
+                </Password>
             </div>
 
             <Button label="Войти" @click="login" text></Button>
@@ -54,5 +54,8 @@ async function login() {
 }
 .app-icon {
     height: 50px;
+}
+.input-password :deep(.p-password-input) {
+    padding-right: 12px !important;
 }
 </style>
