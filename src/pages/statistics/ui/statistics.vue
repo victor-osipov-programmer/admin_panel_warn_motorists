@@ -34,7 +34,7 @@
                                 <div class="d-flex ga-5">
                                     <div>
                                         <div>Всего купленных подписок</div>
-                                        <div class="total-earnings">{{ total_earnings }}</div>
+                                        <div class="total-earnings">{{ total_count }}</div>
                                     </div>
 
                                     <i class="symbol pi pi-credit-card"></i>
