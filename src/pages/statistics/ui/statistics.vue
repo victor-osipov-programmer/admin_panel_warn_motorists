@@ -5,7 +5,7 @@
         <Card class="mb-8">
             <template #content>
                 <div class="d-flex justify-space-between align-center">
-                    <DatePicker v-on:today-click="todayClick" selectionMode="range" v-model="date_range"
+                    <DatePicker dateFormat="dd.mm.yy" v-on:today-click="todayClick" selectionMode="range" v-model="date_range"
                         :max-date="max_date">
                         <template #footer>
                             <div class="d-flex justify-space-between pt-1">

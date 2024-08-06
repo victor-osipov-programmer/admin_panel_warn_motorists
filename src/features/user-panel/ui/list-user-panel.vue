@@ -6,7 +6,7 @@
             </template>
 
             <div class="d-flex flex-column ga-3">
-                <DatePicker :min-date="new Date()" class="subscription-end" v-model="subscription_end"
+                <DatePicker dateFormat="dd.mm.yy" :min-date="new Date()" class="subscription-end" v-model="subscription_end"
                     placeholder="Дата окончания подписки" />
                 <Select v-model="subscription_level" placeholder="Уровень подписки" :options="subscription_levels"
                     option-label="value" />
