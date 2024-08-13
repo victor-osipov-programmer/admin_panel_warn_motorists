@@ -3,40 +3,44 @@
         <div class="content flex flex-col px-8 py-8 gap-6 rounded-2xl"
             style="background-image: radial-gradient(circle at left top, #37474F, #263238)">
             
-            <div class="d-flex justify-center">
-
-                <img class="app-icon mb-5" src="/icons/app-icon.png" alt="app-icon">
+            <div class="d-flex justify-center mb-5">
+                <img class="app-icon" src="/icons/app-icon.png" alt="app-icon">
             </div>
 
-            <div class="inline-flex flex-col gap-2 mb-1">
-                <label for="username" class="text-primary-50 font-semibold">Username</label>
-                <InputText v-model="username" id="username" class="!bg-white/20 !border-0 !p-4 !text-primary-50 w-80" name="username"></InputText>
+            <div class="mb-2">
+                <label for="email" class="login__label">Почта</label>
+                <InputText v-model="email" id="email" fluid/>
             </div>
 
-            <div class="inline-flex flex-col gap-2 mb-5">
-                <label for="password" class="text-primary-50 font-semibold">Password</label>
-                <Password :feedback="false" toggleMask v-model="password" id="password" class="!bg-white/20 !border-0 !p-4 !text-primary-50 w-80 input-password" type="password" name="password">
-                </Password>
+            <div class="mb-2">
+                <label class="login__label">Пароль</label>
+                <Password v-model="password" id="password" type="password" :feedback="false" toggleMask fluid/>
             </div>
 
-            <Button label="Войти" @click="login" text></Button>
-            <div class="d-flex justify-center">
+            <div class="mb-8">
+                <label class="login__label">Код</label>
+                <InputOtp v-model="code" :length="6" integerOnly />
+            </div>
+            
+            <div class="d-flex justify-end">
+                <Button label="Войти" @click="login" ></Button>
             </div>
         </div>
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { fetchLogin } from '@/shared/api';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter()
 
-const username = ref('')
+const email = ref('')
 const password = ref('')
+const code = ref('')
 
 async function login() {
-    await fetchLogin(username.value, password.value)
+    await fetchLogin(email.value, password.value, code.value)
     router.push({name: 'statistics'});
 }
 </script>
@@ -49,7 +53,7 @@ async function login() {
     min-height: 100dvh;
 }
 .content {
-    max-width: 300px;
+    max-width: 500px;
     border-radius: 10px;
 }
 .app-icon {
@@ -57,5 +61,9 @@ async function login() {
 }
 .input-password :deep(.p-password-input) {
     padding-right: 12px !important;
+}
+.login__label {
+    display: block;
+    margin-bottom: 0.25rem;
 }
 </style>

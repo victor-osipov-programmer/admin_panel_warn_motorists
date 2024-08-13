@@ -1,10 +1,11 @@
 import { useLocalStorage } from "@vueuse/core";
 import { http } from "./http";
 
-export async function fetchLogin(username: string, password: string) {
+export async function fetchLogin(email: string, password: string, code: string) {
     const { data } = await http.put('/admin/login', {
-        username,
-        password
+        email,
+        password,
+        code
     })
 
     const access_token = useLocalStorage('access_token', null)

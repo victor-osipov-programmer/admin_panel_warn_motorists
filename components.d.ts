@@ -23,6 +23,7 @@ declare module 'vue' {
     Galleria: typeof import('primevue/galleria')['default']
     Image: typeof import('primevue/image')['default']
     InputNumber: typeof import('primevue/inputnumber')['default']
+    InputOtp: typeof import('primevue/inputotp')['default']
     InputText: typeof import('primevue/inputtext')['default']
     Paginator: typeof import('primevue/paginator')['default']
     Password: typeof import('primevue/password')['default']
