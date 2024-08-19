@@ -40,7 +40,7 @@ export const useApplicationModel = defineStore('application', () => {
         { label: 'Все', value: '' },
     ]);
     
-    const age_applications = ref(age_options.value[0])
+    const age_applications = ref(age_options.value[1])
     const status_applications = ref(status_options.value[0])
 
     watch([age_applications, status_applications], () => {
