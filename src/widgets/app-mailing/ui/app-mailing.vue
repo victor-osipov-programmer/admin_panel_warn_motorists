@@ -9,7 +9,7 @@
                     </FloatLabel>
                 </div>
 
-                <v-file-input v-model="file" accept="image/*" class="file" label="Фото"></v-file-input>
+                <!-- <v-file-input v-model="file" accept="image/*" class="file" label="Фото"></v-file-input> -->
 
                 <v-textarea class="message mb-3" v-model="message" label="Сообщение" prepend-icon="mdi-comment" rows="4"
                     auto-grow></v-textarea>
