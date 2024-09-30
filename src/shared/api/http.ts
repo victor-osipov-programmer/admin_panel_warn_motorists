@@ -29,6 +29,7 @@ http.interceptors.response.use(response => response, async (error) => {
         if (originalRequest.url == '/admin/login') {
             return window.toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Неверный логин или пароль', life: 3000 });
         }
+
         if (error.response.status === 400) {
             window.toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Версия сайта устарела', life: 3000 });
         }
@@ -40,16 +41,13 @@ http.interceptors.response.use(response => response, async (error) => {
             return reportError()
         }
 
-        if (error.response.data == 'invalid token') {
+        if (error.response.status === 401) {
             originalRequest._retry = true;
 
             const refresh_token = useLocalStorage('refresh_token', null)
             const access_token = useLocalStorage('access_token', null)
 
-            const params = new URLSearchParams()
-            params.append('role', 'admin')
-
-            const { status: refresh_status, data } = await http.get('/auth/token/refresh', { params, headers: { 'Authorization': `Bearer ${refresh_token.value}` } })
+            const { status: refresh_status, data } = await http.post('/auth/token/refresh', { role: 'admin' }, { headers: { 'Authorization': `Bearer ${refresh_token.value}` } })
 
             if (refresh_status !== 200) {
                 return reportError()

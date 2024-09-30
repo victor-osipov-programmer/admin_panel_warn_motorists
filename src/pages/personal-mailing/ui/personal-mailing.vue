@@ -63,10 +63,10 @@ function confirmMailing(title: string, message: string, file: File | null) {
                 }
             }
 
-            await http.post(`/admin/push/${route.params.id}`, {
-                "image": file_url,
-                "message": message,
-                "title": title
+            await http.post(`/admin/push`, {
+                "user_id": +route.params.id,
+                "title": title,
+                "text": message
             })
 
             return toast.add({ severity: 'success', summary: 'Успешно', detail: 'Сообщение отправлено', life: 3000 });

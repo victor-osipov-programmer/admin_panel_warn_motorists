@@ -6,3 +6,10 @@ export function downloadFile(name: string, data: any, type: string = 'text/plain
     link.click();
     URL.revokeObjectURL(link.href);
 }
+export function downloadFileByURL(name: string, url: string) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = name;
+    link.click();
+    URL.revokeObjectURL(link.href);
+}

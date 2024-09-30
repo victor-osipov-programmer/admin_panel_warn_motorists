@@ -17,8 +17,8 @@ export const useApplicationModel = defineStore('application', () => {
 
     async function getApplications() {
         const response = await fetchApplications()
-        applications.value = response.applications;
-        total_applications.value = response.found_requests;
+        applications.value = response.reqs;
+        total_applications.value = response.total;
     }
 
     const offset = computed({
@@ -35,9 +35,9 @@ export const useApplicationModel = defineStore('application', () => {
         { label: 'Сначала новые', value: 'new' },
     ]);
     const status_options = ref([
-        { label: 'В ожидании', value: 'pending' },
-        { label: 'Отклоненные', value: 'declined' },
-        { label: 'Все', value: '' },
+        { label: 'В ожидании', value: 'wait' },
+        { label: 'Отклоненные', value: 'rejected' },
+        { label: 'Принятые', value: 'success' },
     ]);
     
     const age_applications = ref(age_options.value[1])

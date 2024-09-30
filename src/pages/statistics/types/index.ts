@@ -1,10 +1,11 @@
 export interface IStatistic {
-    date: string,
-    count: number,
-    total_earnings: number
+    time: string,
+    count: number
 }
 export interface IFetchStatistics {
-    total_count: number,
-    total_earnings: number,
-    daily_stats: IStatistic[]
+    total_users: number,
+    total_buys: number,
+
+    buys: IStatistic[] | null,
+    new_users: IStatistic[] | null,
 }

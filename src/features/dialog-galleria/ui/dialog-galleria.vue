@@ -14,6 +14,11 @@
             </template>
         </Galleria>
 
+        <slot name="content">
+
+        </slot>
+        
+
         <slot name="actions">
 
         </slot>
@@ -30,6 +35,9 @@ const visible = defineModel<boolean>('visible')
 </script>
 
 <style lang="scss" scoped>
+.p-galleria  {
+    margin-bottom: 1rem;
+}
 .img {
     object-fit: cover;
 }

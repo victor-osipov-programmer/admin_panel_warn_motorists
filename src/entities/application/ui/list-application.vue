@@ -1,11 +1,11 @@
 <template>
-    <v-list-item class="list-application" :subtitle="application.brand + ' ' + application.number">
+    <v-list-item class="list-application" :subtitle="application.car_brand + ' ' + application.car_num">
         <template #title>
             <v-chip class="mb-1" color="green" label>
                 <v-icon icon="mdi-card-account-details-outline" start></v-icon>
-                {{ application.user_id }}
+                {{ application.id }}
 
-                <v-tooltip activator="parent" location="top">id пользователя</v-tooltip>
+                <v-tooltip activator="parent" location="top">id заявки</v-tooltip>
             </v-chip>
         </template>
 
@@ -14,7 +14,7 @@
             <div class="d-flex ga-3">
                 <v-chip color="green" label>
                     <v-icon icon="mdi-message" start></v-icon>
-                    {{ new Date(application.request_created).toLocaleString() }}
+                    {{ new Date(application.created_at).toLocaleString() }}
 
                     <v-tooltip activator="parent">Время заявки</v-tooltip>
                 </v-chip>

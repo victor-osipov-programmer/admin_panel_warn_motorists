@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { http } from '@/shared/api';
-import { downloadFile } from '@/shared/libs/file';
+import { downloadFileByURL } from '@/shared/libs/file';
 import { useLocalStorage } from '@vueuse/core';
 import { ToastServiceMethods } from 'primevue/toastservice';
 import { useToast } from 'primevue/usetoast';
@@ -62,6 +62,13 @@ declare global {
     }
 }
 
+window.onbeforeunload = () => {
+    const refresh_token = useLocalStorage('refresh_token', null)
+    const access_token = useLocalStorage('access_token', null)
+    refresh_token.value = null;
+    access_token.value = null;
+}
+
 const drawer = ref(true)
 const rail = ref(true)
 
@@ -74,10 +81,11 @@ function logout() {
 }
 
 async function damp() {
-    const { data } = await http.get<{ data: string, info: string }>('/admin/dump')
+    const { data } = await http.get('/admin/dump')
 
+    console.log(data);
     try {
-        downloadFile('dump.sql', data.data)
+        downloadFileByURL('users_dump.xlsx', data)
         window.toast.add({ severity: 'success', summary: 'Успешно', detail: 'Дамп базы данных сохранён', life: 3000 });
     } catch (err) {
         window.toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Не удалось сохранить дамп', life: 3000 });

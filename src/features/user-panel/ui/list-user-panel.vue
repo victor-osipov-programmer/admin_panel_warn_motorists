@@ -6,10 +6,8 @@
             </template>
 
             <div class="d-flex flex-column ga-3">
-                <DatePicker dateFormat="dd.mm.yy" :min-date="new Date()" class="subscription-end" v-model="subscription_end"
+                <DatePicker dateFormat="dd.mm.yy" :min-date="minDate()" class="subscription-end" v-model="subscription_end"
                     placeholder="Дата окончания подписки" />
-                <Select v-model="subscription_level" placeholder="Уровень подписки" :options="subscription_levels"
-                    option-label="value" />
             </div>
 
             <template #footer>
@@ -23,7 +21,7 @@
         <app-button :to="{ name: 'personal-mailing', params: { id: user.id } }" @click.stop size="min" icon="mdi-email"
             tooltip="Персональное сообщение">Персональное сообщение</app-button>
 
-        <app-button v-if="user.is_blocked" @click.stop="unbanUser" size="min" color="green" icon="mdi-lock-open"
+        <app-button v-if="user.ban" @click.stop="unbanUser" size="min" color="green" icon="mdi-lock-open"
             tooltip="Разблокировать пользователя">Разблокировать</app-button>
         <app-button v-else @click.stop="dialog_ban = true" size="min" color="deep-orange-darken-4" icon="mdi-lock"
             tooltip="Блокировать пользователя">Блокировать</app-button>
@@ -36,12 +34,14 @@
             </template>
 
             <div class="d-flex flex-column ga-3">
-                <InputNumber placeholder="На сколько часов" v-model="ban_hours" fluid :disabled="is_permanent_ban" />
+                <DatePicker dateFormat="dd.mm.yy" :min-date="minDate()" class="subscription-end" v-model="ban_end"
+                    placeholder="Дата окончания бана" />
+                <!-- <InputNumber placeholder="На сколько часов" v-model="ban_end" fluid :disabled="is_permanent_ban" /> -->
 
-                <label class="d-flex align-center ga-1">
+                <!-- <label class="d-flex align-center ga-1">
                     <Checkbox v-model="is_permanent_ban" value="is_permanent_ban" :binary="true" />
                     Без ограничений
-                </label>
+                </label> -->
             </div>
 
             <template #footer>
@@ -62,53 +62,43 @@ import { dateToString } from "@/shared/libs";
 
 const user_model = useUserModel()
 const subscription_end = ref<null | Date>(null)
-const subscription_level = ref<null | { value: string }>(null)
-const subscription_levels = ref([
-    { value: '0' },
-    { value: '1' },
-    { value: '2' },
-    { value: '3' },
-])
 const dialog_gift = ref(false)
 const dialog_ban = ref(false)
 const toast = useToast();
-const ban_hours = ref<null | number>(null)
-const is_permanent_ban = ref(false)
+const ban_end = ref<null | Date>(null)
+// const is_permanent_ban = ref(false)
 
 const props = defineProps<{
     user: IUserApi
 }>()
 
+
 async function donateSubscription() {
     if (!subscription_end.value) {
         return toast.add({ severity: 'error', summary: 'Обязательное поле', detail: 'Укажите дату окончания подписки', life: 3000 });
     }
-    if (!subscription_level.value) {
-        return toast.add({ severity: 'error', summary: 'Обязательное поле', detail: 'Укажите уровень подписки', life: 3000 });
-    }
 
-    const params = new URLSearchParams()
-    const date = subscription_end.value;
-    params.append('end_date', dateToString(date))
-
-    await http.put(`/admin/gift/${props.user.id}`, {
-        "subscriptionLevel": subscription_level.value.value
-    }, { params })
+    await http.post(`/admin/user/gift`, {
+        'id': props.user.id,
+        'gift': dateToString(new Date(subscription_end.value))
+    })
 
     user_model.getUsers()
     dialog_gift.value = false;
     toast.add({ severity: 'success', summary: 'Успешно', detail: 'Подписка подарена', life: 3000 });
 }
 async function banUser() {
-    if (ban_hours.value || is_permanent_ban.value) {
+    if (ban_end.value) {
         const params = new URLSearchParams()
+        params.append('id', String(props.user.id))
+        params.append('date', dateToString(ban_end.value))
 
-        if (is_permanent_ban.value) {
-            params.append('hours', '-1')
-        } else if (ban_hours.value) {
-            params.append('hours', ban_hours.value.toString())
-        }
-        await http.get('/admin/ban/' + props.user.id, { params })
+        // if (is_permanent_ban.value) {
+        //     params.append('hours', '-1')
+        // } else if (ban_end.value) {
+        //     params.append('hours', ban_end.value.toString())
+        // }
+        await http.delete('/admin/ban', { params })
 
         user_model.getUsers()
         dialog_ban.value = false;
@@ -118,10 +108,22 @@ async function banUser() {
     }
 }
 async function unbanUser() {
-    await http.get(`/admin/unban/${props.user.id}`)
+    // const params = new URLSearchParams()
+    // params.append('id', String(props.user.id))
+
+    await http.put(`/admin/ban`, {
+        id: props.user.id
+    })
 
     user_model.getUsers()
     toast.add({ severity: 'success', summary: 'Успешно', detail: 'Пользователь разблокирован', life: 3000 });
+}
+
+function minDate() {
+    const date = new Date()
+    date.setDate(date.getDate() + 1)
+
+    return date;
 }
 </script>
 

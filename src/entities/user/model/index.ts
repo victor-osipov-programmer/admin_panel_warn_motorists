@@ -18,7 +18,7 @@ export const useUserModel = defineStore('user', () => {
     async function getUsers() {
         const response = await fetchUsers()
         users.value = response.users ?? [];
-        total_users.value = response.found_users;
+        total_users.value = response.total;
     }
 
     const offset = computed({
@@ -30,11 +30,10 @@ export const useUserModel = defineStore('user', () => {
         }
     })
 
-    const phone = ref('')
-    const username = ref('')
+    const search = ref('')
 
     const online = ref<null | Date>(null)
-    watch([phone, username], () => {
+    watch([search], () => {
         online.value = new Date()
     })
 
@@ -48,8 +47,7 @@ export const useUserModel = defineStore('user', () => {
         offset,
         total_users,
         getUsers,
-        phone,
-        username,
+        search,
         ...pagination
     }
 })

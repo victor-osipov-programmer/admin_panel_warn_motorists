@@ -1,1 +1,1 @@
-export { default as UserCars } from './ui/user-cars.vue'
+export { default as UserProfile } from './ui/user-profile.vue'

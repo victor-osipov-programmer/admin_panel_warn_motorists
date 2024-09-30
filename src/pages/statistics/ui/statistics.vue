@@ -21,10 +21,10 @@
                                 <div class="d-flex ga-5">
                                     <div>
                                         <div>Общий доход</div>
-                                        <div class="total-earnings">{{ total_earnings }}</div>
+                                        <div class="total-earnings">{{ total_buys }}</div>
                                     </div>
 
-                                    <i class="symbol pi pi-dollar"></i>
+                                    <img class="rub-icon" src="@/shared/svg/rub.svg" alt="rub">
                                 </div>
                             </template>
                         </Card>
@@ -33,8 +33,8 @@
                             <template #content>
                                 <div class="d-flex ga-5">
                                     <div>
-                                        <div>Всего купленных подписок</div>
-                                        <div class="total-earnings">{{ total_count }}</div>
+                                        <div>Новые пользователи</div>
+                                        <div class="total-earnings">{{ total_users }}</div>
                                     </div>
 
                                     <i class="symbol pi pi-credit-card"></i>
@@ -49,13 +49,13 @@
         <div class="charts d-flex ga-5">
             <Card class="chart">
                 <template #content>
-                    <Chart type="bar" :data="total_earnings_data" />
+                    <Chart type="bar" :data="buys_data" />
                 </template>
             </Card>
 
             <Card class="chart">
                 <template #content>
-                    <Chart type="bar" :data="count_subscribers_data" />
+                    <Chart type="bar" :data="new_users_data" />
                 </template>
             </Card>
         </div>
@@ -67,7 +67,7 @@ import { http } from "@/shared/api";
 import { dateToString } from "@/shared/libs";
 import { ref, computed, watchEffect } from "vue";
 import type { IFetchStatistics, IStatistic } from "../types";
-import { useStatisticsGenerator } from "../libs";
+import { statisticsGenerator } from "../libs";
 
 const date = new Date();
 const max_offset_date = ref(30)
@@ -84,21 +84,24 @@ function clearClick() {
     date_range.value = null
 }
 
-const statistics = ref<IStatistic[]>([])
-const total_earnings = ref<number>(0)
-const total_count = ref<number>(0)
+const buys = ref<IStatistic[]>([])
+const new_users = ref<IStatistic[]>([])
+// const statistics = ref<IStatistic[]>([])
+const total_buys = ref<number>(0)
+const total_users = ref<number>(0)
 
 watchEffect(async () => {
     if (date_range.value && date_range.value[0] && date_range.value[1]) {
         const params = new URLSearchParams()
-        params.append('start_date', dateToString(date_range.value[0]))
-        params.append('end_date', dateToString(date_range.value[1]))
+        params.append('from', dateToString(date_range.value[0]))
+        params.append('to', dateToString(date_range.value[1]))
 
         const { data } = await http.get<IFetchStatistics>('/admin/stats', { params })
 
-        statistics.value = data.daily_stats;
-        total_earnings.value = data.total_earnings;
-        total_count.value = data.total_count;
+        buys.value = data.buys ?? [];
+        new_users.value = data.new_users ?? [];
+        total_buys.value = data.total_buys;
+        total_users.value = data.total_users;
     }
 })
 
@@ -113,10 +116,11 @@ const max_date = computed(() => {
     }
 })
 
-const statisticsGenerator = useStatisticsGenerator(statistics)
+// const statisticsGenerator = useStatisticsGenerator(statistics)
 
-const total_earnings_data = computed(() => statisticsGenerator('Доход', 'total_earnings'))
-const count_subscribers_data = computed(() => statisticsGenerator('Количество купленных подписок', 'count'))
+
+const buys_data = computed(() => statisticsGenerator('Покупки', buys))
+const new_users_data = computed(() => statisticsGenerator('Пользователи', new_users))
 </script>
 
 <style lang="scss" scoped>
@@ -130,5 +134,8 @@ const count_subscribers_data = computed(() => statisticsGenerator('Количе�
 }
 .symbol {
     font-size: 2rem;
+}
+.rub-icon {
+    height: 28px;
 }
 </style>

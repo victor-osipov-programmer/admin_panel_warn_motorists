@@ -32,13 +32,31 @@
             </template>
         </DataView>
 
-        <application-cars v-model:visible="dialog" header="Заявка" :application_cars @accept="acceptApplication"
-            @deny="denyApplication" />
+        <application-cars v-model:visible="dialog" header="Заявка" :application_cars :application @accept="acceptApplication"
+            @deny="dialog_deny = true" />
+
+
+        <Dialog v-model:visible="dialog_deny">
+            <template #header>
+                <div class="mr-3">
+                    Причина отклонения
+                </div>
+            </template>
+
+            <div class="d-flex flex-column ga-3">
+                <v-textarea class="message mb-3" v-model="cause" label="Сообщение" prepend-icon="mdi-comment" rows="2"
+                    auto-grow></v-textarea>
+            </div>
+
+            <template #footer>
+                <Button @click="denyApplication">Отклонить</Button>
+            </template>
+        </Dialog>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { useApplicationModel } from '@/entities/application';
+import { IApplicationApi, useApplicationModel } from '@/entities/application';
 import { computed, ref } from 'vue';
 import { ListApplication } from '@/entities/application';
 import { ApplicationCars } from '@/widgets/application-cars';
@@ -51,23 +69,33 @@ const toast = useToast()
 const application_model = useApplicationModel()
 application_model.getApplications()
 
-const application_id = ref<null | string>(null)
+const application_id = ref<null | number>(null)
+const application = computed((): IApplicationApi | undefined => {
+    return application_model.applications?.find((application) => application.id == application_id.value);
+})
 const application_cars = computed((): string[] => {
-    const photo = application_model.applications.find((application) => application.id === application_id.value)?.photo
-    return photo ? [photo] : []
+    const application = application_model.applications?.find((application) => application.id == application_id.value);
+    return application?.photo ? [application.photo] : []
 })
 
 const dialog = ref(false)
+const dialog_deny = ref(false)
+const cause = ref('')
 
-function openDialog(id: string) {
+function openDialog(id: number) {
     application_id.value = id;
     dialog.value = true;
 }
 
 async function acceptApplication() {
-    const params = new URLSearchParams()
-    params.append('action', 'submit')
-    const { status } = await http.get(`/admin/submit/${application_id.value}`, { params })
+    // const params = new URLSearchParams()
+    // params.append('action', 'submit')
+    // const { status } = await http.get(`/admin/submit/${application_id.value}`, { params })
+    const { status } = await http.put(`/admin/request`, {
+        id: application_id.value,
+        aprove: true,
+        cause: ''
+    })
 
     if (status === 200) {
         dialog.value = false;
@@ -80,9 +108,15 @@ async function acceptApplication() {
 }
 
 async function denyApplication() {
-    const params = new URLSearchParams()
-    params.append('action', 'decline')
-    const { status } = await http.get(`/admin/submit/${application_id.value}`, { params })
+    dialog_deny.value = false;
+    // const params = new URLSearchParams()
+    // params.append('action', 'decline')
+    // const { status } = await http.get(`/admin/submit/${application_id.value}`, { params })
+    const { status } = await http.put(`/admin/request`, {
+        id: application_id.value,
+        aprove: false,
+        cause: cause.value
+    })
 
     if (status === 200) {
         dialog.value = false;
@@ -95,4 +129,5 @@ async function denyApplication() {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>

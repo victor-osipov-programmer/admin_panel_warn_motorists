@@ -55,10 +55,9 @@ function confirmMailing(title, message, file) {
             }
 
             const { status, data } = await http.post('/admin/push', {
-                "image": file_url,
-                "message": message,
-                "title": title
-            })
+                "title": title,
+                "text": message,
+            }) 
 
             console.log('/admin/push status', status)
             console.log('/admin/push data', data)
