@@ -63,10 +63,27 @@ declare global {
 }
 
 window.onbeforeunload = () => {
-    const refresh_token = useLocalStorage('refresh_token', null)
-    const access_token = useLocalStorage('access_token', null)
-    refresh_token.value = null;
-    access_token.value = null;
+    const last_action = useLocalStorage<null | string>('last_action', null)
+    last_action.value = String(Date.now());
+}
+
+window.onload = () => {
+    const last_action = useLocalStorage<null | string>('last_action', null)
+
+    if (last_action.value) {
+        const diff = Date.now() - +last_action.value
+
+        if (diff > 5000) {
+            console.log('Вкладка была закрыта и снова открыта');
+
+            const refresh_token = useLocalStorage('refresh_token', null)
+            const access_token = useLocalStorage('access_token', null)
+            refresh_token.value = null;
+            access_token.value = null;
+        } else {
+            console.log('Страница перезагружена');
+        }
+    }
 }
 
 const drawer = ref(true)
@@ -83,7 +100,6 @@ function logout() {
 async function damp() {
     const { data } = await http.get('/admin/dump')
 
-    console.log(data);
     try {
         downloadFileByURL('users_dump.xlsx', data)
         window.toast.add({ severity: 'success', summary: 'Успешно', detail: 'Дамп базы данных сохранён', life: 3000 });

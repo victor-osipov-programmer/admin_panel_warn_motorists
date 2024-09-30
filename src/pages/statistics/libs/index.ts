@@ -29,8 +29,6 @@ export function statisticsGenerator(label: string, statistics: Ref<IStatistic[]>
     const data: number[] = []
 
     statistics.value.forEach(el => {
-        // console.log(Date.parse(el.time));
-        console.log();
         if (date_format) {
             const res = el.time.match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/i)
 

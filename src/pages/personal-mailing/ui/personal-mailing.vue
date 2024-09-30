@@ -56,8 +56,6 @@ function confirmMailing(title: string, message: string, file: File | null) {
 
                 if (status === 200) {
                     file_url = file_data;
-                    console.log('file_data', file_data)
-                    console.log('file_url', file_url)
                 } else {
                     return toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Не удалось загрузить изображение', life: 3000 });
                 }

@@ -47,8 +47,6 @@ function confirmMailing(title, message, file) {
 
                 if (status === 200) {
                     file_url = file_data;
-                    console.log('file_data', file_data)
-                    console.log('file_url', file_url)
                 } else {
                     return toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Не удалось загрузить изображение', life: 3000 });
                 }
@@ -58,9 +56,6 @@ function confirmMailing(title, message, file) {
                 "title": title,
                 "text": message,
             }) 
-
-            console.log('/admin/push status', status)
-            console.log('/admin/push data', data)
 
             if (status === 200 || status == 201) {
                 return toast.add({ severity: 'success', summary: 'Успешно', detail: 'Рассылка запущена', life: 3000 });
